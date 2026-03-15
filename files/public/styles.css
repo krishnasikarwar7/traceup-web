@@ -1873,8 +1873,8 @@ html[data-theme='dark'] .site-footer.site-footer-floating {
   ::view-transition-new(root) {
     animation: none !important;
   }
-  .live-aurora,
-  .live-grid,
+  html:not(.allow-live-motion) .live-aurora,
+  html:not(.allow-live-motion) .live-grid,
   .site-footer .footer-heart,
   .anim-up,
   .anim-up-1,

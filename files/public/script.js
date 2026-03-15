@@ -1218,7 +1218,17 @@ function initFooter() {
 function initLiveBackgrounds() {
   const hosts = $$('.live-particles');
   if (!hosts.length) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const isLivePage =
+    document.body.classList.contains('landing-page') ||
+    document.body.classList.contains('auth-page');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const allowLiveMotion = isLivePage;
+
+  if (allowLiveMotion) {
+    document.documentElement.classList.add('allow-live-motion');
+  }
+
+  if (reduceMotion && !allowLiveMotion) return;
 
   hosts.forEach((host) => {
     if (host.dataset.liveInit === '1') return;
