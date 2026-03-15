@@ -62,9 +62,10 @@ function initThemeToggle() {
   btn.type = 'button';
   btn.className = 'theme-toggle-btn';
 
-  const setLabel = () => {
-    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-    btn.textContent = dark ? '☀ Light' : '🌙 Dark';
+  const setLabel = (themeValue = document.documentElement.getAttribute('data-theme') || initialTheme) => {
+    const dark = themeValue === 'dark';
+    // Show current theme on the button; tooltip/aria describe the next action.
+    btn.textContent = dark ? '🌙 Dark' : '☀ Light';
     btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
     btn.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode');
   };
@@ -89,7 +90,7 @@ function initThemeToggle() {
     const current = document.documentElement.getAttribute('data-theme') || 'light';
     const next = current === 'dark' ? 'light' : 'dark';
     applyTheme(next, true, true);
-    setLabel();
+    setLabel(next);
   });
 
   // Follow OS preference only when user hasn't explicitly chosen a theme.
@@ -97,7 +98,7 @@ function initThemeToggle() {
   const onSystemChange = (event) => {
     if (localStorage.getItem(THEME_KEY)) return;
     applyTheme(event.matches ? 'dark' : 'light', false, true);
-    setLabel();
+    setLabel(event.matches ? 'dark' : 'light');
   };
   if (typeof mql.addEventListener === 'function') {
     mql.addEventListener('change', onSystemChange);
@@ -105,7 +106,7 @@ function initThemeToggle() {
     mql.addListener(onSystemChange);
   }
 
-  setLabel();
+  setLabel(initialTheme);
 }
 
 // ── Token management ──────────────────────────────────────────
