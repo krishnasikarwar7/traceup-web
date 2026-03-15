@@ -328,10 +328,14 @@ body.has-mobile-nav {
   font-size: 20px; flex-shrink: 0;
 }
 .stat-icon i { font-size: 18px; }
-.stat-icon-lost { background: var(--red-lt); color: var(--red); }
-.stat-icon-found { background: var(--green-lt); color: var(--green); }
-.stat-icon-claimed { background: var(--amber-lt); color: var(--amber); }
-.stat-icon-returned { background: var(--violet-lt); color: var(--violet); }
+.stat-icon-lost,
+.stat-icon-found,
+.stat-icon-claimed,
+.stat-icon-returned {
+  background: var(--bg-subtle);
+  color: var(--ink-2);
+  border: 1px solid var(--border);
+}
 
 .stat-body {}
 .stat-label { font-size: 12px; color: var(--ink-3); font-weight: 500; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
@@ -785,7 +789,24 @@ textarea.form-control { resize: vertical; min-height: 110px; line-height: 1.6; }
 
 .td-name      { font-weight: 500; color: var(--ink); }
 .td-sub       { font-size: 12px; color: var(--ink-4); margin-top: 2px; }
-.td-actions   { display: flex; gap: 8px; align-items: center; }
+.td-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.td-actions .btn-view-claims { min-width: 108px; }
+.td-actions .btn-view-item { min-width: 64px; }
+.td-actions .btn-delete-item { min-width: 96px; }
+.action-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+.btn-action-placeholder {
+  min-width: 108px;
+  visibility: hidden;
+  pointer-events: none;
+}
 
 .table-scroll { overflow-x: auto; }
 

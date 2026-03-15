@@ -925,10 +925,10 @@ async function initAdmin() {
 
     const actions = item.status !== 'returned'
       ? `<button class="btn btn-outline btn-sm btn-view-claims" data-id="${item.id}" data-title="${escapeHtml(item.title)}"><i class="fa-solid fa-eye" aria-hidden="true"></i> Claims</button>
-         <a href="item-details.html?id=${item.id}" class="btn btn-ghost btn-sm">View</a>
+         <a href="item-details.html?id=${item.id}" class="btn btn-ghost btn-sm btn-view-item">View</a>
          <button class="btn btn-danger btn-sm btn-delete-item" data-id="${item.id}"><i class="fa-solid fa-trash-can" aria-hidden="true"></i> Delete</button>`
-      : `<span class="text-sm text-muted fw-500">Resolved</span>
-         <a href="item-details.html?id=${item.id}" class="btn btn-ghost btn-sm">View</a>
+      : `<span class="btn btn-outline btn-sm btn-action-placeholder" aria-hidden="true">Claims</span>
+         <a href="item-details.html?id=${item.id}" class="btn btn-ghost btn-sm btn-view-item">View</a>
          <button class="btn btn-danger btn-sm btn-delete-item" data-id="${item.id}"><i class="fa-solid fa-trash-can" aria-hidden="true"></i> Delete</button>`;
 
     return `
@@ -952,7 +952,7 @@ async function initAdmin() {
         <td>
           <span class="claims-count ${hasClaims ? 'high' : ''}">${item.pending_claims || 0}</span>
         </td>
-        <td class="action-cell"><div class="td-actions" style="gap:6px;">${actions}</div></td>
+        <td class="action-cell"><div class="td-actions">${actions}</div></td>
       </tr>`;
   }
 
