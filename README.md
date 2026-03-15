@@ -59,7 +59,6 @@ It supports:
 └── README.md
 ```
 
-Note: `files/campus-lf-backend/` exists as an older/legacy copy and is **not** the active app used by `server.js`.
 
 ---
 
@@ -171,13 +170,6 @@ Use the seed script only for dev/testing. It clears existing `claims`, `items`, 
 ```bash
 node files/seed.js
 ```
-
-Demo users seeded:
-- `admin@university.edu` / `admin123` (admin)
-- `alex@university.edu` / `pass1234` (user)
-
----
-
 ## Available Scripts
 
 ```bash
