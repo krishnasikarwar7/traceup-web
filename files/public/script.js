@@ -242,7 +242,7 @@ function initMobileQuickNav() {
     { href: '/report-found.html', page: 'report-found.html', icon: '✅', label: 'Found' },
   ];
   if (Auth.isAdmin()) {
-    links.push({ href: '/admin.html', page: 'admin.html', icon: '🛡', label: 'Admin' });
+    links.push({ href: '/admin.html', page: 'admin.html', icon: '🛡', label: 'Controls' });
   }
 
   const nav = document.createElement('nav');
