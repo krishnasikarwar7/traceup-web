@@ -130,7 +130,10 @@
 
   const renderConversationList = () => {
     if (!state.conversations.length) {
-      listEl.innerHTML = '<div class="text-sm text-muted">No conversations yet.</div>';
+      const emptyMessage = isAdminPage
+        ? 'No chats are available at the moment.'
+        : 'No chats are available at the moment. Messages will appear here after you submit a claim.';
+      listEl.innerHTML = `<div class="text-sm text-muted">${escapeHtml(emptyMessage)}</div>`;
       return;
     }
 
@@ -340,6 +343,11 @@
 
     if (!state.conversations.length) {
       setHeader(null);
+      if (!isAdminPage) {
+        chatMessagesEl.innerHTML = '<div class="text-sm text-muted">No chats are available at the moment. Messages will appear here after you submit a claim.</div>';
+      } else {
+        chatMessagesEl.innerHTML = '<div class="text-sm text-muted">No chats are available at the moment.</div>';
+      }
       return;
     }
 
