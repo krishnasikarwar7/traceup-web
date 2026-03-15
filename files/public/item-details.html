@@ -6,6 +6,7 @@
   <title>Item Details — TraceUp</title>
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,9 +18,7 @@
     TraceUp
   </a>
   <div class="nav-search">
-    <span class="nav-search-icon">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    </span>
+    <span class="nav-search-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
     <input type="text" placeholder="Search items…">
   </div>
   <div class="nav-links">
@@ -75,28 +74,28 @@
 
         <div class="detail-info-body">
           <div class="detail-row">
-            <div class="detail-row-icon">📍</div>
+            <div class="detail-row-icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></div>
             <div>
               <div class="detail-row-label">Location</div>
               <div class="detail-row-val" id="detailLocation">—</div>
             </div>
           </div>
           <div class="detail-row">
-            <div class="detail-row-icon">📅</div>
+            <div class="detail-row-icon"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i></div>
             <div>
               <div class="detail-row-label">Date</div>
               <div class="detail-row-val" id="detailDate">—</div>
             </div>
           </div>
           <div class="detail-row">
-            <div class="detail-row-icon">🏷️</div>
+            <div class="detail-row-icon"><i class="fa-solid fa-tags" aria-hidden="true"></i></div>
             <div>
               <div class="detail-row-label">Category</div>
               <div class="detail-row-val" id="detailCategory">—</div>
             </div>
           </div>
           <div class="detail-row">
-            <div class="detail-row-icon">👤</div>
+            <div class="detail-row-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
             <div>
               <div class="detail-row-label">Reported by</div>
               <div class="detail-row-val" id="detailReporter">—</div>
@@ -106,7 +105,7 @@
 
         <div class="detail-info-footer">
           <button class="btn btn-teal btn-block" id="btnClaim">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/></svg>
+            <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i>
             Claim This Item
           </button>
         </div>
@@ -137,7 +136,7 @@
     </div>
     <div class="modal-body">
       <div class="notice-box info" style="margin-bottom:18px;">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <i class="fa-solid fa-circle-info" style="flex-shrink:0;margin-top:1px;" aria-hidden="true"></i>
         <span>Your claim will be reviewed by admin. You may be asked to provide proof of ownership.</span>
       </div>
 
@@ -155,7 +154,7 @@
     <div class="modal-footer">
       <button class="btn btn-outline" data-modal-close="claimModal">Cancel</button>
       <button class="btn btn-teal" id="submitClaim">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
         Submit Claim
       </button>
     </div>

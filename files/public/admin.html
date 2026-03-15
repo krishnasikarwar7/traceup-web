@@ -6,6 +6,7 @@
   <title>Admin Dashboard — TraceUp</title>
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="styles.css">
   <style>
     .admin-badge {
@@ -14,6 +15,7 @@
       font-size: 11.5px; font-weight: 600;
       background: #FEF3C7; color: #92400E;
     }
+    .admin-badge i { opacity: .9; }
     .claims-count {
       display: inline-flex; align-items: center; justify-content: center;
       min-width: 22px; height: 22px; border-radius: 50%;
@@ -52,6 +54,7 @@
       font-size: 12px; color: var(--ink-3); margin-bottom: 8px;
     }
     .claim-card-meta span { display: flex; align-items: center; gap: 4px; }
+    .claim-card-meta i { width: 13px; text-align: center; opacity: .85; }
     .claim-card-message {
       background: var(--bg-subtle); border: 1px solid var(--border);
       border-radius: 8px; padding: 10px 14px;
@@ -71,6 +74,7 @@
       cursor: pointer; border-bottom: 2px solid transparent;
       margin-bottom: -2px; transition: all 0.2s;
     }
+    .admin-tab-btn i { margin-right: 6px; opacity: .9; }
     .admin-tab-btn:hover { color: var(--ink); }
     .admin-tab-btn.active {
       color: var(--teal-dk); border-bottom-color: var(--teal-dk);
@@ -118,9 +122,7 @@
     TraceUp
   </a>
   <div class="nav-search">
-    <span class="nav-search-icon">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    </span>
+    <span class="nav-search-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
     <input type="text" placeholder="Search items…">
   </div>
   <div class="nav-links">
@@ -142,7 +144,7 @@
       <div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
           <h1 class="page-title">Admin Dashboard</h1>
-          <span class="admin-badge">🔐 Admin</span>
+          <span class="admin-badge"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Admin</span>
         </div>
         <p class="text-sm text-muted">Manage lost &amp; found reports, claims, and users for your college.</p>
       </div>
@@ -163,9 +165,9 @@
 
   <!-- Admin Tabs -->
   <div class="admin-tabs anim-up-2">
-    <button class="admin-tab-btn active" data-admin-tab="tab-items">📦 Items</button>
-    <button class="admin-tab-btn" data-admin-tab="tab-claims">📋 Claims</button>
-    <button class="admin-tab-btn" data-admin-tab="tab-users">👥 Users</button>
+    <button class="admin-tab-btn active" data-admin-tab="tab-items"><i class="fa-solid fa-box-archive" aria-hidden="true"></i> Items</button>
+    <button class="admin-tab-btn" data-admin-tab="tab-claims"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Claims</button>
+    <button class="admin-tab-btn" data-admin-tab="tab-users"><i class="fa-solid fa-users" aria-hidden="true"></i> Users</button>
   </div>
 
   <!-- TAB: Items -->
@@ -173,9 +175,7 @@
     <!-- Toolbar -->
     <div class="admin-toolbar">
       <div class="admin-search">
-        <span class="admin-search-icon">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        </span>
+        <span class="admin-search-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
         <input type="text" id="adminSearch" placeholder="Search by item, user, location…">
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -217,9 +217,7 @@
   <div class="admin-tab-panel" id="tab-claims">
     <div class="admin-toolbar">
       <div class="admin-search">
-        <span class="admin-search-icon">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        </span>
+        <span class="admin-search-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
         <input type="text" id="claimSearch" placeholder="Search claims…">
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">

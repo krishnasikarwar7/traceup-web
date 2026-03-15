@@ -6,6 +6,7 @@
   <title>Dashboard — TraceUp</title>
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,9 +19,7 @@
   </a>
 
   <div class="nav-search">
-    <span class="nav-search-icon">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    </span>
+    <span class="nav-search-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
     <input type="text" id="globalSearch" placeholder="Search items, locations…">
   </div>
 
@@ -57,28 +56,28 @@
   <!-- Stat Cards -->
   <div class="grid-stats mb-6 anim-up-1">
     <div class="stat-card">
-      <div class="stat-icon" style="background:#FEF2F2;">📦</div>
+      <div class="stat-icon" style="background:#FEF2F2;"><i class="fa-solid fa-box-archive" aria-hidden="true"></i></div>
       <div class="stat-body">
         <div class="stat-label">Lost Items</div>
         <div class="stat-value" id="stat-lost">—</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon" style="background:var(--green-lt);">✅</div>
+      <div class="stat-icon" style="background:var(--green-lt);"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></div>
       <div class="stat-body">
         <div class="stat-label">Found Items</div>
         <div class="stat-value" id="stat-found">—</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon" style="background:var(--amber-lt);">🏷️</div>
+      <div class="stat-icon" style="background:var(--amber-lt);"><i class="fa-solid fa-tags" aria-hidden="true"></i></div>
       <div class="stat-body">
         <div class="stat-label">Pending Claims</div>
         <div class="stat-value" id="stat-claimed">—</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon" style="background:var(--violet-lt);">🎉</div>
+      <div class="stat-icon" style="background:var(--violet-lt);"><i class="fa-solid fa-handshake-angle" aria-hidden="true"></i></div>
       <div class="stat-body">
         <div class="stat-label">Returned</div>
         <div class="stat-value" id="stat-returned">—</div>

@@ -65,7 +65,9 @@ function initThemeToggle() {
   const setLabel = (themeValue = document.documentElement.getAttribute('data-theme') || initialTheme) => {
     const dark = themeValue === 'dark';
     // Show current theme on the button; tooltip/aria describe the next action.
-    btn.textContent = dark ? '🌙 Dark' : '☀ Light';
+    const iconClass = dark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    const label = dark ? 'Dark' : 'Light';
+    btn.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i><span>${label}</span>`;
     btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
     btn.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode');
   };
@@ -155,10 +157,14 @@ function toast(msg, type = 'info', duration = 3400) {
     wrap.id = 'toast-container';
     document.body.appendChild(wrap);
   }
-  const icons = { success: '✓', error: '✕', info: 'ℹ' };
+  const icons = {
+    success: '<i class="fa-solid fa-circle-check" aria-hidden="true"></i>',
+    error: '<i class="fa-solid fa-circle-xmark" aria-hidden="true"></i>',
+    info: '<i class="fa-solid fa-circle-info" aria-hidden="true"></i>',
+  };
   const el    = document.createElement('div');
   el.className = `toast ${type}`;
-  el.innerHTML = `<span>${icons[type] || 'ℹ'}</span><span>${msg}</span>`;
+  el.innerHTML = `<span>${icons[type] || icons.info}</span><span>${msg}</span>`;
   wrap.appendChild(el);
   setTimeout(() => {
     el.style.opacity   = '0';
@@ -237,13 +243,13 @@ function initMobileQuickNav() {
   }
 
   const links = [
-    { href: '/dashboard.html', page: 'dashboard.html', icon: '🏠', label: 'Home' },
-    { href: '/chat.html', page: 'chat.html', icon: '💬', label: 'Chats' },
-    { href: '/report-lost.html', page: 'report-lost.html', icon: '📍', label: 'Lost' },
-    { href: '/report-found.html', page: 'report-found.html', icon: '✅', label: 'Found' },
+    { href: '/dashboard.html', page: 'dashboard.html', iconClass: 'fa-solid fa-house', label: 'Home' },
+    { href: '/chat.html', page: 'chat.html', iconClass: 'fa-solid fa-comments', label: 'Chats' },
+    { href: '/report-lost.html', page: 'report-lost.html', iconClass: 'fa-solid fa-location-dot', label: 'Lost' },
+    { href: '/report-found.html', page: 'report-found.html', iconClass: 'fa-solid fa-circle-check', label: 'Found' },
   ];
   if (Auth.isAdmin()) {
-    links.push({ href: '/admin.html', page: 'admin.html', icon: '🛡', label: 'Controls' });
+    links.push({ href: '/admin.html', page: 'admin.html', iconClass: 'fa-solid fa-sliders', label: 'Controls' });
   }
 
   const nav = document.createElement('nav');
@@ -254,7 +260,7 @@ function initMobileQuickNav() {
     const active = page === link.page || (page === 'admin-chats.html' && link.page === 'admin.html');
     return `
       <a href="${link.href}" class="mobile-quick-link ${active ? 'active' : ''}" data-page="${link.page}">
-        <span class="icon" aria-hidden="true">${link.icon}</span>
+        <span class="icon" aria-hidden="true"><i class="${link.iconClass}"></i></span>
         <span class="label">${link.label}</span>
       </a>
     `;
@@ -510,11 +516,11 @@ async function initDashboard() {
           <div class="item-card-body">
             <div class="item-card-title">${escapeHtml(item.title)}</div>
             <div class="item-card-meta">
-              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
               ${escapeHtml(item.location)}
             </div>
             <div class="item-card-meta">
-              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
               ${dateStr}
             </div>
             <div class="item-card-footer">
@@ -545,7 +551,7 @@ async function initDashboard() {
 
     const res = await api('GET', `${endpoint}?${params.toString()}`);
     if (!res?.ok || !res.data?.length) {
-      container.innerHTML = `<div style="grid-column:1/-1;" class="empty-state"><div class="empty-icon">📭</div><p class="empty-msg">No ${type || 'items'} found.</p></div>`;
+      container.innerHTML = `<div style="grid-column:1/-1;" class="empty-state"><div class="empty-icon"><i class="fa-solid fa-folder-open" aria-hidden="true"></i></div><p class="empty-msg">No ${type || 'items'} found.</p></div>`;
       return;
     }
 
@@ -788,18 +794,18 @@ async function initItemDetails() {
 
   // ── Claim button logic ─────────────────────────────────────
   const btnClaim = $('#btnClaim');
-  if (btnClaim) {
-    const user = Auth.getUser();
+    if (btnClaim) {
+      const user = Auth.getUser();
 
-    if (!user) {
-      btnClaim.textContent = 'Sign in to Claim';
+      if (!user) {
+      btnClaim.innerHTML = '<i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Sign in to Claim';
       btnClaim.addEventListener('click', () => location.href = 'login.html');
     } else if (item.user_id === user.id) {
-      btnClaim.textContent = 'Your Item';
+      btnClaim.innerHTML = '<i class="fa-solid fa-user-check" aria-hidden="true"></i> Your Item';
       btnClaim.disabled    = true;
       btnClaim.classList.replace('btn-teal', 'btn-outline');
     } else if (item.status === 'returned') {
-      btnClaim.textContent = 'Already Returned';
+      btnClaim.innerHTML = '<i class="fa-solid fa-handshake-angle" aria-hidden="true"></i> Already Returned';
       btnClaim.disabled    = true;
       btnClaim.classList.replace('btn-teal', 'btn-outline');
     } else {
@@ -824,7 +830,7 @@ async function initItemDetails() {
     btn.disabled    = true;
 
     const res = await api('POST', '/claims', { item_id: itemId, message, contact });
-    btn.textContent = 'Submit Claim';
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Submit Claim';
     btn.disabled    = false;
 
     if (!res?.ok && !(res?.status === 409 && res?.data?.conversation_id)) {
@@ -841,7 +847,7 @@ async function initItemDetails() {
 
     // Update button state
     if (btnClaim) {
-      btnClaim.textContent = 'Claim Submitted ✓';
+      btnClaim.innerHTML = '<i class="fa-solid fa-circle-check" aria-hidden="true"></i> Claim Submitted';
       btnClaim.disabled    = true;
       btnClaim.classList.replace('btn-teal', 'btn-outline');
     }
@@ -918,12 +924,12 @@ async function initAdmin() {
     const hasClaims = (item.pending_claims || 0) > 0;
 
     const actions = item.status !== 'returned'
-      ? `<button class="btn btn-outline btn-sm btn-view-claims" data-id="${item.id}" data-title="${escapeHtml(item.title)}">👁 Claims</button>
+      ? `<button class="btn btn-outline btn-sm btn-view-claims" data-id="${item.id}" data-title="${escapeHtml(item.title)}"><i class="fa-solid fa-eye" aria-hidden="true"></i> Claims</button>
          <a href="item-details.html?id=${item.id}" class="btn btn-ghost btn-sm">View</a>
-         <button class="btn btn-danger btn-sm btn-delete-item" data-id="${item.id}">🗑 Delete</button>`
+         <button class="btn btn-danger btn-sm btn-delete-item" data-id="${item.id}"><i class="fa-solid fa-trash-can" aria-hidden="true"></i> Delete</button>`
       : `<span class="text-sm text-muted fw-500">Resolved</span>
          <a href="item-details.html?id=${item.id}" class="btn btn-ghost btn-sm">View</a>
-         <button class="btn btn-danger btn-sm btn-delete-item" data-id="${item.id}">🗑 Delete</button>`;
+         <button class="btn btn-danger btn-sm btn-delete-item" data-id="${item.id}"><i class="fa-solid fa-trash-can" aria-hidden="true"></i> Delete</button>`;
 
     return `
       <tr data-status="${item.status}" data-item-id="${item.id}">
@@ -976,8 +982,8 @@ async function initAdmin() {
 
     const actions = claim.status === 'pending' ? `
       <div class="claim-card-actions">
-        <button class="btn btn-success btn-sm btn-approve-claim" data-claim-id="${claim.id}">✓ Approve</button>
-        <button class="btn btn-danger btn-sm btn-reject-claim" data-claim-id="${claim.id}">✕ Reject</button>
+        <button class="btn btn-success btn-sm btn-approve-claim" data-claim-id="${claim.id}"><i class="fa-solid fa-check" aria-hidden="true"></i> Approve</button>
+        <button class="btn btn-danger btn-sm btn-reject-claim" data-claim-id="${claim.id}"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Reject</button>
       </div>` : '';
 
     const itemPreview = showItemPreview && claim.item_title ? `
@@ -1004,9 +1010,9 @@ async function initAdmin() {
           <span class="badge ${statusCls}"><span class="badge-dot"></span>${capitalize(claim.status)}</span>
         </div>
         <div class="claim-card-meta">
-          ${claim.claimant_department ? `<span>🏢 ${escapeHtml(claim.claimant_department)}</span>` : ''}
-          ${claim.claimant_phone || claim.contact ? `<span>📞 ${escapeHtml(claim.contact || claim.claimant_phone)}</span>` : ''}
-          ${dateStr ? `<span>📅 ${dateStr}</span>` : ''}
+          ${claim.claimant_department ? `<span><i class="fa-solid fa-building" aria-hidden="true"></i> ${escapeHtml(claim.claimant_department)}</span>` : ''}
+          ${claim.claimant_phone || claim.contact ? `<span><i class="fa-solid fa-phone" aria-hidden="true"></i> ${escapeHtml(claim.contact || claim.claimant_phone)}</span>` : ''}
+          ${dateStr ? `<span><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> ${dateStr}</span>` : ''}
         </div>
         <div class="claim-card-message">"${escapeHtml(claim.message)}"</div>
         ${actions}
@@ -1103,7 +1109,7 @@ async function initAdmin() {
       const res = await api('DELETE', `/admin/items/${itemId}`);
       if (!res?.ok) {
         toast(res?.error || 'Failed to delete item.', 'error');
-        deleteBtn.textContent = '🗑 Delete';
+        deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can" aria-hidden="true"></i> Delete';
         deleteBtn.disabled = false;
         return;
       }
@@ -1123,7 +1129,7 @@ async function initAdmin() {
       const res = await api('PUT', `/admin/claims/${claimId}/approve`);
       if (!res?.ok) {
         toast(res?.error || 'Failed to approve.', 'error');
-        approveBtn.textContent = '✓ Approve';
+        approveBtn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Approve';
         approveBtn.disabled = false;
         return;
       }
@@ -1149,7 +1155,7 @@ async function initAdmin() {
       const res = await api('PUT', `/admin/claims/${claimId}/reject`);
       if (!res?.ok) {
         toast(res?.error || 'Failed to reject.', 'error');
-        rejectBtn.textContent = '✕ Reject';
+        rejectBtn.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i> Reject';
         rejectBtn.disabled = false;
         return;
       }
@@ -1236,7 +1242,7 @@ function previewFile(file, drop, preview) {
       if (nm) nm.textContent = file.name;
     }
     const lbl = drop.querySelector('.file-drop-title');
-    if (lbl) lbl.textContent = `✓ ${file.name}`;
+    if (lbl) lbl.innerHTML = `<i class="fa-solid fa-circle-check" aria-hidden="true"></i> ${escapeHtml(file.name)}`;
   };
   reader.readAsDataURL(file);
 }
