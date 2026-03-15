@@ -7,6 +7,10 @@ pnpm-debug.log*
 # Local env/config
 files/.env
 .env
+.env.*
+files/.env.*
+!.env.example
+!files/.env.example
 
 # Runtime artifacts
 uploads/

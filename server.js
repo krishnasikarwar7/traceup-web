@@ -18,7 +18,13 @@ const cors    = require('cors');
 const crypto  = require('crypto');
 const path    = require('path');
 const fs      = require('fs');
-require('dotenv').config({ path: path.join(__dirname, 'files', '.env') });
+const dotenv  = require('dotenv');
+
+// Load env in this order:
+// 1) default root .env (local dev / Railway-style)
+// 2) files/.env (legacy project layout fallback)
+dotenv.config();
+dotenv.config({ path: path.join(__dirname, 'files', '.env'), override: false });
 
 // Initialize Supabase client (validates env vars on import)
 require('./files/config/db');
@@ -29,11 +35,11 @@ const itemRoutes  = require('./files/routes/itemRoutes');
 const claimRoutes = require('./files/routes/claimRoutes');
 const adminRoutes = require('./files/routes/adminRoutes');
 const chatRoutes  = require('./files/routes/chatRoutes');
+const User        = require('./files/models/User');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
-const DEFAULT_JWT_SECRET = 'campus_lf_super_secret_jwt_key_change_this_in_production_2024';
 const normalizeOrigin = (value = '') => {
   if (!value) return '';
   const raw = String(value).trim();
@@ -73,9 +79,8 @@ if (isProduction) {
     console.warn('[startup] FRONTEND_URL is not set. Falling back to auto-detected platform origins:', allowedOrigins.length ? allowedOrigins.join(', ') : '(none)');
   }
   const hasStrongJwt =
-    !!process.env.JWT_SECRET &&
-    process.env.JWT_SECRET !== DEFAULT_JWT_SECRET &&
-    process.env.JWT_SECRET.length >= 32;
+    typeof process.env.JWT_SECRET === 'string' &&
+    process.env.JWT_SECRET.trim().length >= 32;
 
   if (!hasStrongJwt) {
     const fallbackFromSupabase =
@@ -99,6 +104,39 @@ try {
   if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 } catch (err) {
   console.warn('Could not create UPLOAD_DIR:', err.message);
+}
+
+const adminSeedConfig = {
+  email: (process.env.ADMIN_EMAIL || '').trim().toLowerCase(),
+  password: process.env.ADMIN_PASSWORD || '',
+  name: (process.env.ADMIN_NAME || 'System Admin').trim(),
+  department: (process.env.ADMIN_DEPARTMENT || 'Administration').trim(),
+  securityQuestion: (process.env.ADMIN_SECURITY_QUESTION || 'What is your employee ID?').trim(),
+  securityAnswer: process.env.ADMIN_SECURITY_ANSWER || '',
+};
+
+async function ensureAdminSeedUser() {
+  if (!adminSeedConfig.email || !adminSeedConfig.password || !adminSeedConfig.securityAnswer) {
+    console.warn('[startup] Admin seed skipped. Set ADMIN_EMAIL, ADMIN_PASSWORD and ADMIN_SECURITY_ANSWER to auto-create admin.');
+    return;
+  }
+
+  const existing = await User.findByEmail(adminSeedConfig.email);
+  if (existing) {
+    console.log(`[startup] Admin seed check: user already exists (${adminSeedConfig.email}).`);
+    return;
+  }
+
+  await User.create({
+    name: adminSeedConfig.name,
+    email: adminSeedConfig.email,
+    password: adminSeedConfig.password,
+    role: 'admin',
+    department: adminSeedConfig.department || null,
+    security_question: adminSeedConfig.securityQuestion,
+    security_answer: adminSeedConfig.securityAnswer,
+  });
+  console.log(`[startup] Seeded admin user from environment (${adminSeedConfig.email}).`);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -243,7 +281,13 @@ app.use((err, req, res, next) => {
 // ═══════════════════════════════════════════════════════════════
 //  START SERVER
 // ═══════════════════════════════════════════════════════════════
-if (require.main === module) {
+async function startServer() {
+  try {
+    await ensureAdminSeedUser();
+  } catch (err) {
+    console.error('[startup] Admin seed failed:', err.message || err);
+  }
+
   app.listen(PORT, () => {
     console.log('\n╔══════════════════════════════════════════════╗');
     console.log('║   TraceUp API  (Supabase)                    ║');
@@ -272,11 +316,14 @@ if (require.main === module) {
     console.log('║  GET    /api/admin/users       [admin]       ║');
     console.log('║  GET    /api/admin/chats       [admin]       ║');
     console.log('╠══════════════════════════════════════════════╣');
-    console.log('║  Seed credentials:                           ║');
-    console.log('║  admin@university.edu  /  admin123           ║');
-    console.log('║  alex@university.edu   /  pass1234           ║');
+    console.log('║  Optional admin auto-seed via env vars:      ║');
+    console.log('║  ADMIN_EMAIL / ADMIN_PASSWORD / ADMIN_*      ║');
     console.log('╚══════════════════════════════════════════════╝\n');
   });
+}
+
+if (require.main === module) {
+  startServer();
 }
 
 module.exports = app;
