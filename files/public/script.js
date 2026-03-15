@@ -183,10 +183,15 @@ document.addEventListener('click', e => {
 });
 
 // ── Set active nav link ───────────────────────────────────────
-function setActiveNav() {
+function resolveCurrentPage() {
   let page = location.pathname.split('/').pop() || 'index.html';
   if (/^\/chat\/[0-9a-f-]+$/i.test(location.pathname)) page = 'chat.html';
   if (location.pathname === '/admin/chats') page = 'admin-chats.html';
+  return page;
+}
+
+function setActiveNav() {
+  const page = resolveCurrentPage();
   $$('.nav-link[data-page]').forEach(l => l.classList.toggle('active', l.dataset.page === page));
 
   // Show/hide admin nav link based on role
@@ -202,6 +207,53 @@ function setActiveNav() {
       av.title = user.name;
     }
   });
+}
+
+function initMobileQuickNav() {
+  const page = resolveCurrentPage();
+  const isMobile = window.matchMedia('(max-width: 900px)').matches;
+  const supportsQuickNavPage = !['index.html', 'login.html'].includes(page);
+  const shouldShow = isMobile && Auth.isLoggedIn() && supportsQuickNavPage && !!$('.navbar');
+  const existing = $('#mobileQuickNav');
+
+  if (!shouldShow) {
+    existing?.remove();
+    document.body.classList.remove('has-mobile-nav');
+    return;
+  }
+
+  const links = [
+    { href: '/dashboard.html', page: 'dashboard.html', icon: '🏠', label: 'Home' },
+    { href: '/chat.html', page: 'chat.html', icon: '💬', label: 'Chats' },
+    { href: '/report-lost.html', page: 'report-lost.html', icon: '📍', label: 'Lost' },
+    { href: '/report-found.html', page: 'report-found.html', icon: '✅', label: 'Found' },
+  ];
+  if (Auth.isAdmin()) {
+    links.push({ href: '/admin.html', page: 'admin.html', icon: '🛡', label: 'Admin' });
+  }
+
+  const nav = document.createElement('nav');
+  nav.id = 'mobileQuickNav';
+  nav.className = 'mobile-quick-nav';
+  nav.setAttribute('aria-label', 'Mobile quick navigation');
+  nav.innerHTML = links.map((link) => {
+    const active = page === link.page || (page === 'admin-chats.html' && link.page === 'admin.html');
+    return `
+      <a href="${link.href}" class="mobile-quick-link ${active ? 'active' : ''}" data-page="${link.page}">
+        <span class="icon" aria-hidden="true">${link.icon}</span>
+        <span class="label">${link.label}</span>
+      </a>
+    `;
+  }).join('');
+
+  existing?.remove();
+  document.body.appendChild(nav);
+  document.body.classList.add('has-mobile-nav');
+
+  if (!window.__traceupMobileQuickNavBound) {
+    window.__traceupMobileQuickNavBound = true;
+    window.addEventListener('resize', debounce(initMobileQuickNav, 120), { passive: true });
+  }
 }
 
 // ── Guard: redirect to login if not authenticated ─────────────
@@ -1309,6 +1361,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initThemeToggle();
   initFooter();
   setActiveNav();
+  initMobileQuickNav();
   initAuth();
   initDashboard();
   initReportForm();

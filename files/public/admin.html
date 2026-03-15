@@ -88,6 +88,25 @@
       width: 44px; height: 33px; border-radius: 6px;
       object-fit: cover; border: 1px solid var(--border); flex-shrink: 0;
     }
+
+    @media (max-width: 900px) {
+      .admin-tabs {
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .admin-tabs::-webkit-scrollbar { display: none; }
+      .admin-tab-btn {
+        min-height: 42px;
+        flex: 0 0 auto;
+      }
+      .claim-card-actions {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
