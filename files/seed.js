@@ -1,37 +1,63 @@
 'use strict';
 
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+const dotenv = require('dotenv');
+dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env'), override: false });
 const supabase = require('./config/db');
 const User     = require('./models/User');
 const Item     = require('./models/Item');
+
+const readEnv = (name, fallback = '') => {
+  const value = process.env[name];
+  if (typeof value === 'string') return value.trim();
+  return fallback;
+};
+
+const requiredEnv = (name, fallback = '') => {
+  const value = readEnv(name, fallback);
+  if (!value) throw new Error(`Missing required environment variable: ${name}`);
+  return value;
+};
+
+const seedConfig = {
+  admin: {
+    name: readEnv('SEED_ADMIN_NAME', readEnv('ADMIN_NAME', 'System Admin')),
+    email: requiredEnv('SEED_ADMIN_EMAIL', readEnv('ADMIN_EMAIL')),
+    password: requiredEnv('SEED_ADMIN_PASSWORD', readEnv('ADMIN_PASSWORD')),
+    role: 'admin',
+    department: readEnv('SEED_ADMIN_DEPARTMENT', readEnv('ADMIN_DEPARTMENT', 'Security Office')),
+    security_question: readEnv('SEED_ADMIN_SECURITY_QUESTION', readEnv('ADMIN_SECURITY_QUESTION', 'What city were you born in?')),
+    security_answer: requiredEnv('SEED_ADMIN_SECURITY_ANSWER', readEnv('ADMIN_SECURITY_ANSWER')),
+  },
+  student: {
+    name: readEnv('SEED_STUDENT_NAME', 'Student User'),
+    email: requiredEnv('SEED_STUDENT_EMAIL'),
+    password: requiredEnv('SEED_STUDENT_PASSWORD'),
+    department: readEnv('SEED_STUDENT_DEPARTMENT', 'Engineering'),
+    security_question: readEnv('SEED_STUDENT_SECURITY_QUESTION', 'What was the name of your first pet?'),
+    security_answer: requiredEnv('SEED_STUDENT_SECURITY_ANSWER'),
+  },
+};
 
 async function seed() {
   console.log('🗑️  Clearing existing data...');
 
   // Delete in order: claims → items → users (respecting foreign keys)
-  await supabase.from('claims').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-  await supabase.from('items').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-  await supabase.from('users').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  await supabase.from('claims').delete().not('id', 'is', null);
+  await supabase.from('items').delete().not('id', 'is', null);
+  await supabase.from('users').delete().not('id', 'is', null);
 
   console.log('👤 Creating users...');
-  const admin = await User.create({
-    name: 'System Admin',
-    email: 'admin@university.edu',
-    password: 'admin123',
-    role: 'admin',
-    department: 'Security Office',
-    security_question: 'What city were you born in?',
-    security_answer: 'Delhi'
-  });
+  const admin = await User.create(seedConfig.admin);
 
   const student = await User.create({
-    name: 'Alex Johnson',
-    email: 'alex@university.edu',
-    password: 'pass1234',
-    department: 'Engineering',
-    security_question: 'What was the name of your first pet?',
-    security_answer: 'Buddy'
+    name: seedConfig.student.name,
+    email: seedConfig.student.email,
+    password: seedConfig.student.password,
+    department: seedConfig.student.department,
+    security_question: seedConfig.student.security_question,
+    security_answer: seedConfig.student.security_answer,
   });
 
   console.log('📦 Creating items...');

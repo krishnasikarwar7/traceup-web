@@ -1,11 +1,44 @@
 'use strict';
 
-require('dotenv').config();
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env'), override: false });
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Item = require('./models/Item');
 const Claim = require('./models/Claim');
 const connectDB = require('./config/db');
+
+const readEnv = (name, fallback = '') => {
+  const value = process.env[name];
+  if (typeof value === 'string') return value.trim();
+  return fallback;
+};
+
+const requiredEnv = (name, fallback = '') => {
+  const value = readEnv(name, fallback);
+  if (!value) throw new Error(`Missing required environment variable: ${name}`);
+  return value;
+};
+
+const seedConfig = {
+  admin: {
+    name: readEnv('SEED_ADMIN_NAME', readEnv('ADMIN_NAME', 'System Admin')),
+    email: requiredEnv('SEED_ADMIN_EMAIL', readEnv('ADMIN_EMAIL')),
+    password: requiredEnv('SEED_ADMIN_PASSWORD', readEnv('ADMIN_PASSWORD')),
+    role: 'admin',
+    department: readEnv('SEED_ADMIN_DEPARTMENT', readEnv('ADMIN_DEPARTMENT', 'Security Office')),
+    phone: readEnv('SEED_ADMIN_PHONE', '555-0001'),
+  },
+  student: {
+    name: readEnv('SEED_STUDENT_NAME', 'Student User'),
+    email: requiredEnv('SEED_STUDENT_EMAIL'),
+    password: requiredEnv('SEED_STUDENT_PASSWORD'),
+    department: readEnv('SEED_STUDENT_DEPARTMENT', 'Engineering'),
+    phone: readEnv('SEED_STUDENT_PHONE', '555-0200'),
+  },
+};
 
 async function seed() {
   await connectDB();
@@ -14,22 +47,9 @@ async function seed() {
   await mongoose.connection.db.dropDatabase();
 
   console.log('Creating users...');
-  const admin = await User.create({
-    name: 'System Admin',
-    email: 'admin@university.edu',
-    password: 'admin123',
-    role: 'admin',
-    department: 'Security Office',
-    phone: '555-0001'
-  });
+  const admin = await User.create(seedConfig.admin);
 
-  const student = await User.create({
-    name: 'Alex Johnson',
-    email: 'alex@university.edu',
-    password: 'pass1234',
-    department: 'Engineering',
-    phone: '555-0200'
-  });
+  const student = await User.create(seedConfig.student);
 
   console.log('Creating items...');
   const item1 = await Item.create({
