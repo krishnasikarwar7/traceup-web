@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="auth-wrap">
+  <div class="auth-blob auth-blob-1"></div>
+  <div class="auth-blob auth-blob-2"></div>
+
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <div class="auth-logo-mark">🔍</div>
+      <span>Campus Lost &amp; Found</span>
+    </div>
+
+    <!-- LOGIN BLOCK -->
+    <div id="loginBlock">
+      <h1 class="auth-heading">Welcome back</h1>
+      <p class="auth-sub">Sign in to your campus portal account.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Email address <span class="req">*</span></label>
+        <input class="form-control" type="email" id="loginEmail" placeholder="you@university.edu" autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="loginPass">Password <span class="req">*</span></label>
+        <input class="form-control" type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+        <div style="text-align:right; margin-top:6px;">
+          <a href="#" style="font-size:12.5px; color:var(--teal-dk);">Forgot password?</a>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-xl btn-block" id="btnLogin">Sign in →</button>
+
+      <div class="auth-divider">or</div>
+
+      <p class="auth-switch">
+        New to the portal? <a href="#" id="switchToSignup">Create an account</a>
+      </p>
+    </div>
+
+    <!-- SIGNUP BLOCK -->
+    <div id="signupBlock" class="hidden">
+      <h1 class="auth-heading">Create account</h1>
+      <p class="auth-sub">Join your campus community portal.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="signupName">Full name <span class="req">*</span></label>
+        <input class="form-control" type="text" id="signupName" placeholder="Alex Johnson">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="signupEmail">Email address <span class="req">*</span></label>
+        <input class="form-control" type="email" id="signupEmail" placeholder="you@university.edu">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group mb-0">
+          <label class="form-label" for="signupRole">Role</label>
+          <select class="form-control" id="signupRole">
+            <option value="">Select…</option>
+            <option>Student</option>
+            <option>Faculty</option>
+            <option>Staff</option>
+          </select>
+        </div>
+        <div class="form-group mb-0">
+          <label class="form-label" for="signupYear">Year / Dept</label>
+          <input class="form-control" type="text" id="signupYear" placeholder="e.g. CS — Year 2">
+        </div>
+      </div>
+
+      <div class="form-group mt-4">
+        <label class="form-label" for="signupPass">Password <span class="req">*</span></label>
+        <input class="form-control" type="password" id="signupPass" placeholder="Minimum 8 characters">
+      </div>
+
+      <button class="btn btn-teal btn-xl btn-block" id="btnSignup">Create account →</button>
+
+      <div class="auth-divider">or</div>
+
+      <p class="auth-switch">
+        Already have an account? <a href="#" id="switchToLogin">Sign in</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="script.js"></script>
+</body>
+</html>

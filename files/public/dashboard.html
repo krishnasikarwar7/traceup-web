@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — TraceUp</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <img src="logo.svg" alt="TraceUp" style="width:28px;height:28px;border-radius:6px;">
+    TraceUp
+  </a>
+
+  <div class="nav-search">
+    <span class="nav-search-icon">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" id="globalSearch" placeholder="Search items, locations…">
+  </div>
+
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+    <a href="chat.html" class="nav-link" data-page="chat.html">Chats</a>
+    <a href="report-lost.html" class="nav-link" data-page="report-lost.html">Report Lost</a>
+    <a href="report-found.html" class="nav-link" data-page="report-found.html">Report Found</a>
+    <a href="admin.html" class="nav-link" data-page="admin.html">Admin</a>
+    <div class="avatar" title="User"></div>
+    <button class="btn btn-outline btn-sm" id="btnLogout" style="margin-left:6px;font-size:12px;padding:5px 12px;">Logout</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="container">
+
+  <!-- Page Header -->
+  <div class="page-hd anim-up">
+    <div class="page-hd-row">
+      <div>
+        <div style="display:flex;align-items:center;gap:15px;margin-bottom:8px;">
+          <h1 class="page-title">TraceUp Dashboard</h1>
+        </div>
+        <p class="text-sm text-muted">Keep track of your lost and found items in one place.</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="report-lost.html" class="btn btn-outline btn-sm">+ Report Lost</a>
+        <a href="report-found.html" class="btn btn-teal btn-sm">+ Report Found</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stat Cards -->
+  <div class="grid-stats mb-6 anim-up-1">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#FEF2F2;">📦</div>
+      <div class="stat-body">
+        <div class="stat-label">Lost Items</div>
+        <div class="stat-value" id="stat-lost">—</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--green-lt);">✅</div>
+      <div class="stat-body">
+        <div class="stat-label">Found Items</div>
+        <div class="stat-value" id="stat-found">—</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--amber-lt);">🏷️</div>
+      <div class="stat-body">
+        <div class="stat-label">Pending Claims</div>
+        <div class="stat-value" id="stat-claimed">—</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--violet-lt);">🎉</div>
+      <div class="stat-body">
+        <div class="stat-label">Returned</div>
+        <div class="stat-value" id="stat-returned">—</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Tabs -->
+    <div class="tabs" data-tabs>
+      <button class="tab-btn active" data-tab="tab-lost">Lost Items</button>
+      <button class="tab-btn" data-tab="tab-found">Found Items</button>
+      <button class="tab-btn" data-tab="tab-myitems" style="margin-left:auto;">My Items</button>
+      <button class="tab-btn" data-tab="tab-myclaims">My Claims</button>
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="chips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="lost">Lost</button>
+      <button class="chip" data-filter="found">Found</button>
+      <button class="chip" data-filter="claimed">Claimed</button>
+      <button class="chip" data-filter="returned">Returned</button>
+    </div>
+
+    <!-- LOST ITEMS TAB -->
+    <div class="tab-panel active" id="tab-lost">
+      <div class="section-hd">
+        <div>
+          <div class="section-title">Recent Lost Items</div>
+          <div class="section-sub">Items reported missing on campus</div>
+        </div>
+      </div>
+      <div class="grid-cards" id="grid-lost">
+        <div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--ink-3);">Loading…</div>
+      </div>
+    </div>
+
+    <!-- FOUND ITEMS TAB -->
+    <div class="tab-panel" id="tab-found">
+      <div class="section-hd">
+        <div>
+          <div class="section-title">Recent Found Items</div>
+          <div class="section-sub">Items turned in to campus security or staff</div>
+        </div>
+      </div>
+      <div class="grid-cards" id="grid-found">
+        <div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--ink-3);">Loading…</div>
+      </div>
+    </div>
+
+    <!-- MY ITEMS TAB -->
+    <div class="tab-panel" id="tab-myitems">
+      <div class="section-hd">
+        <div>
+          <div class="section-title">Items I've Reported</div>
+          <div class="section-sub">Track the status of your lost or found reports</div>
+        </div>
+      </div>
+      <div class="grid-cards" id="grid-myitems">
+        <div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--ink-3);">Loading…</div>
+      </div>
+    </div>
+
+    <!-- MY CLAIMS TAB -->
+    <div class="tab-panel" id="tab-myclaims">
+      <div class="section-hd">
+        <div>
+          <div class="section-title">My Claims</div>
+          <div class="section-sub">Track the status of items you're trying to claim</div>
+        </div>
+      </div>
+      <div id="list-myclaims">
+        <div style="padding:40px;text-align:center;color:var(--ink-3);">Loading…</div>
+      </div>
+    </div>
+
+  </div><!-- /tabs -->
+
+</main>
+
+<div id="toast-container"></div>
+<footer class="site-footer"><div class="footer-brand">TraceUp</div><p class="footer-tagline">Reuniting lost belongings across campus communities.</p><div class="footer-links"><a href="https://github.com/krishnasikarwar7/traceup-web" target="_blank" rel="noopener noreferrer">GitHub</a><span aria-hidden="true">•</span><a href="https://github.com/krishnasikarwar7/traceup-web/issues" target="_blank" rel="noopener noreferrer">Report Issue</a><span aria-hidden="true">•</span><a href="mailto:sikarwarkrishna177@email.com">Contact</a></div><p class="footer-copy">© 2026 TraceUp — Built by Krishna</p></footer>
+<script src="script.js"></script>
+</body>
+</html>

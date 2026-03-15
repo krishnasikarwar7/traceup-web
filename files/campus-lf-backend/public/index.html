@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=login.html">
+  <title>Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; }
+    .splash {
+      text-align:center; animation: fadeUp .5s var(--ease) both;
+    }
+    .splash-logo {
+      width:64px; height:64px; background:var(--ink); border-radius:18px;
+      display:grid; place-items:center; font-size:30px;
+      margin:0 auto 18px;
+    }
+    .splash-title { font-family:'DM Serif Display',serif; font-size:26px; margin-bottom:8px; }
+    .splash-sub { color:var(--ink-3); font-size:14px; }
+    .splash-link { margin-top:20px; }
+  </style>
+</head>
+<body>
+<div class="splash">
+  <div class="splash-logo">🔍</div>
+  <h1 class="splash-title">Campus Lost &amp; Found</h1>
+  <p class="splash-sub">Connecting campus community — reuniting lost belongings.</p>
+  <div class="splash-link">
+    <a href="login.html" class="btn btn-primary btn-lg">Go to Portal →</a>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

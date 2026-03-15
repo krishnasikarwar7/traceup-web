@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 5px;
+      font-size: 11.5px; font-weight: 600;
+      background: #FEF3C7; color: #92400E;
+    }
+    .claims-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--teal-lt); color: var(--teal-dk);
+      font-size: 11px; font-weight: 700;
+    }
+    .claims-count.high {
+      background: #FEF2F2; color: var(--red);
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">🔍</div>
+    Campus L&amp;F
+  </a>
+  <div class="nav-search">
+    <span class="nav-search-icon">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" placeholder="Search items…">
+  </div>
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+    <a href="report-lost.html" class="nav-link" data-page="report-lost.html">Report Lost</a>
+    <a href="report-found.html" class="nav-link" data-page="report-found.html">Report Found</a>
+    <a href="admin.html" class="nav-link" data-page="admin.html">Admin</a>
+    <div class="avatar" style="background:linear-gradient(135deg,#7C3AED,#5B21B6);" title="Admin">AD</div>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- Header -->
+  <div class="page-hd anim-up">
+    <div class="page-hd-row">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <h1 class="page-title">Admin Dashboard</h1>
+          <span class="admin-badge">🔐 Admin</span>
+        </div>
+        <p class="text-sm text-muted">Manage all lost &amp; found reports, claims, and user submissions.</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm" onclick="showToast('Report exported as CSV.','success')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+        <a href="report-lost.html" class="btn btn-primary btn-sm">+ Add Item</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="admin-stat-bar anim-up-1">
+    <div class="mini-stat"><span>Total Items</span><strong>78</strong></div>
+    <div class="mini-stat" style="color:var(--red);"><span>Lost</span><strong style="color:var(--red);" id="stat-lost">47</strong></div>
+    <div class="mini-stat" style="color:var(--green);"><span>Found</span><strong style="color:var(--green);" id="stat-found">31</strong></div>
+    <div class="mini-stat" style="color:var(--amber);"><span>Pending Claims</span><strong style="color:var(--amber);" id="stat-claimed">12</strong></div>
+    <div class="mini-stat" style="color:var(--violet);"><span>Returned</span><strong style="color:var(--violet);" id="stat-returned">89</strong></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="admin-toolbar anim-up-2">
+    <div class="admin-search">
+      <span class="admin-search-icon">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </span>
+      <input type="text" id="adminSearch" placeholder="Search by item, user, location…">
+    </div>
+
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <button class="chip admin-filter-chip active" data-filter="all">All</button>
+      <button class="chip admin-filter-chip" data-filter="lost">Lost</button>
+      <button class="chip admin-filter-chip" data-filter="found">Found</button>
+      <button class="chip admin-filter-chip" data-filter="claimed">Claimed</button>
+      <button class="chip admin-filter-chip" data-filter="returned">Returned</button>
+    </div>
+
+    <select class="form-control" style="width:auto;padding:8px 32px 8px 12px;font-size:13px;" onchange="showToast('Sorted.','info')">
+      <option>Newest first</option>
+      <option>Oldest first</option>
+      <option>Most claims</option>
+      <option>A–Z</option>
+    </select>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap anim-up-3">
+    <div class="table-scroll">
+      <table class="data-table" id="adminTable">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Status</th>
+            <th>Posted by</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Claim Requests</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr data-status="lost">
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="https://picsum.photos/seed/laptop42/48/36" alt="" style="width:44px;height:33px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+                <div>
+                  <div class="td-name">MacBook Pro 14"</div>
+                  <div class="td-sub">Electronics</div>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell"><span class="badge badge-lost"><span class="badge-dot"></span>Lost</span></td>
+            <td>
+              <div class="td-name">Priya Singh</div>
+              <div class="td-sub">CS — Year 3</div>
+            </td>
+            <td class="text-sm">Main Library, 2F</td>
+            <td class="text-sm text-muted">Mar 10, 2026</td>
+            <td><span class="claims-count high">3</span></td>
+            <td class="action-cell">
+              <div class="td-actions">
+                <button class="btn btn-success btn-sm btn-approve">✓ Approve</button>
+                <button class="btn btn-danger btn-sm btn-reject">✕ Reject</button>
+                <a href="item-details.html" class="btn btn-ghost btn-sm">View</a>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="found">
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="https://picsum.photos/seed/umbrella12/48/36" alt="" style="width:44px;height:33px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+                <div>
+                  <div class="td-name">Black Compact Umbrella</div>
+                  <div class="td-sub">Accessories</div>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell"><span class="badge badge-found"><span class="badge-dot"></span>Found</span></td>
+            <td>
+              <div class="td-name">Security Staff</div>
+              <div class="td-sub">Admin Office</div>
+            </td>
+            <td class="text-sm">Admin Block Entrance</td>
+            <td class="text-sm text-muted">Mar 11, 2026</td>
+            <td><span class="claims-count">1</span></td>
+            <td class="action-cell">
+              <div class="td-actions">
+                <button class="btn btn-success btn-sm btn-approve">✓ Approve</button>
+                <button class="btn btn-danger btn-sm btn-reject">✕ Reject</button>
+                <a href="item-details.html" class="btn btn-ghost btn-sm">View</a>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="claimed">
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="https://picsum.photos/seed/airpods55/48/36" alt="" style="width:44px;height:33px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+                <div>
+                  <div class="td-name">AirPods Pro (Gen 2)</div>
+                  <div class="td-sub">Electronics</div>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell"><span class="badge badge-claimed"><span class="badge-dot"></span>Claimed</span></td>
+            <td>
+              <div class="td-name">Sneha Patil</div>
+              <div class="td-sub">MBA — Year 1</div>
+            </td>
+            <td class="text-sm">Sports Complex</td>
+            <td class="text-sm text-muted">Mar 8, 2026</td>
+            <td><span class="claims-count high">2</span></td>
+            <td class="action-cell">
+              <div class="td-actions">
+                <button class="btn btn-success btn-sm btn-approve">✓ Approve</button>
+                <button class="btn btn-danger btn-sm btn-reject">✕ Reject</button>
+                <a href="item-details.html" class="btn btn-ghost btn-sm">View</a>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="returned">
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="https://picsum.photos/seed/jacket33/48/36" alt="" style="width:44px;height:33px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+                <div>
+                  <div class="td-name">Blue University Hoodie</div>
+                  <div class="td-sub">Clothing</div>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell"><span class="badge badge-returned"><span class="badge-dot"></span>Returned</span></td>
+            <td>
+              <div class="td-name">Aisha Khan</div>
+              <div class="td-sub">Law — Year 2</div>
+            </td>
+            <td class="text-sm">Lecture Hall A</td>
+            <td class="text-sm text-muted">Mar 6, 2026</td>
+            <td><span class="claims-count">1</span></td>
+            <td class="action-cell">
+              <span class="text-sm text-muted fw-500">Resolved</span>
+            </td>
+          </tr>
+
+          <tr data-status="lost">
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="https://picsum.photos/seed/wallet21/48/36" alt="" style="width:44px;height:33px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+                <div>
+                  <div class="td-name">Brown Leather Wallet</div>
+                  <div class="td-sub">Accessories</div>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell"><span class="badge badge-lost"><span class="badge-dot"></span>Lost</span></td>
+            <td>
+              <div class="td-name">Rohan Mehta</div>
+              <div class="td-sub">Mechanical — Year 4</div>
+            </td>
+            <td class="text-sm">Cafeteria Block B</td>
+            <td class="text-sm text-muted">Mar 9, 2026</td>
+            <td><span class="claims-count">0</span></td>
+            <td class="action-cell">
+              <div class="td-actions">
+                <button class="btn btn-success btn-sm btn-approve">✓ Approve</button>
+                <button class="btn btn-danger btn-sm btn-reject">✕ Reject</button>
+                <a href="item-details.html" class="btn btn-ghost btn-sm">View</a>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="found">
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="https://picsum.photos/seed/watch99/48/36" alt="" style="width:44px;height:33px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+                <div>
+                  <div class="td-name">Silver Digital Watch</div>
+                  <div class="td-sub">Accessories</div>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell"><span class="badge badge-found"><span class="badge-dot"></span>Found</span></td>
+            <td>
+              <div class="td-name">Rahul Verma</div>
+              <div class="td-sub">Civil — Year 2</div>
+            </td>
+            <td class="text-sm">Gymnasium Locker Room</td>
+            <td class="text-sm text-muted">Mar 10, 2026</td>
+            <td><span class="claims-count">1</span></td>
+            <td class="action-cell">
+              <div class="td-actions">
+                <button class="btn btn-success btn-sm btn-approve">✓ Approve</button>
+                <button class="btn btn-danger btn-sm btn-reject">✕ Reject</button>
+                <a href="item-details.html" class="btn btn-ghost btn-sm">View</a>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="lost">
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="https://picsum.photos/seed/keychain88/48/36" alt="" style="width:44px;height:33px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+                <div>
+                  <div class="td-name">Key Bundle (3 keys)</div>
+                  <div class="td-sub">Keys</div>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell"><span class="badge badge-lost"><span class="badge-dot"></span>Lost</span></td>
+            <td>
+              <div class="td-name">Dev Kumar</div>
+              <div class="td-sub">ECE — Year 3</div>
+            </td>
+            <td class="text-sm">Engineering Block</td>
+            <td class="text-sm text-muted">Mar 7, 2026</td>
+            <td><span class="claims-count">0</span></td>
+            <td class="action-cell">
+              <div class="td-actions">
+                <button class="btn btn-success btn-sm btn-approve">✓ Approve</button>
+                <button class="btn btn-danger btn-sm btn-reject">✕ Reject</button>
+                <a href="item-details.html" class="btn btn-ghost btn-sm">View</a>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="claimed">
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="https://picsum.photos/seed/glasses44/48/36" alt="" style="width:44px;height:33px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+                <div>
+                  <div class="td-name">Prescription Glasses</div>
+                  <div class="td-sub">Personal</div>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell"><span class="badge badge-claimed"><span class="badge-dot"></span>Claimed</span></td>
+            <td>
+              <div class="td-name">Meena Joshi</div>
+              <div class="td-sub">BBA — Year 1</div>
+            </td>
+            <td class="text-sm">Seminar Hall 3</td>
+            <td class="text-sm text-muted">Mar 9, 2026</td>
+            <td><span class="claims-count">1</span></td>
+            <td class="action-cell">
+              <div class="td-actions">
+                <button class="btn btn-success btn-sm btn-approve">✓ Approve</button>
+                <button class="btn btn-danger btn-sm btn-reject">✕ Reject</button>
+                <a href="item-details.html" class="btn btn-ghost btn-sm">View</a>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Table footer -->
+    <div style="padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <span class="text-xs text-muted" id="adminItemCount">Loading…</span>
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm">← Previous</button>
+        <button class="btn btn-outline btn-sm" style="background:var(--teal-lt);border-color:var(--teal);color:var(--teal-dk);">1</button>
+        <button class="btn btn-outline btn-sm">2</button>
+        <button class="btn btn-outline btn-sm">3</button>
+        <button class="btn btn-outline btn-sm">Next →</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast-container"></div>
+<script src="script.js"></script>
+<script>
+  function showToast(m, t) {
+    const w = document.getElementById('toast-container');
+    const icons = {success:'✓',error:'✕',info:'ℹ'};
+    const el = document.createElement('div');
+    el.className = `toast ${t}`;
+    el.innerHTML = `<span>${icons[t]}</span><span>${m}</span>`;
+    w.appendChild(el);
+    setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all .25s'; setTimeout(()=>el.remove(),260); }, 3200);
+  }
+</script>
+</body>
+</html>

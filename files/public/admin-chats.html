@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/">
+  <title>Admin Chats — TraceUp</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <img src="logo.svg" alt="TraceUp" style="width:28px;height:28px;border-radius:6px;">
+    TraceUp
+  </a>
+  <div class="nav-search">
+    <span class="nav-search-icon">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" placeholder="Admin chat monitor">
+  </div>
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+    <a href="admin.html" class="nav-link" data-page="admin.html">Admin</a>
+    <a href="admin-chats.html" class="nav-link" data-page="admin-chats.html">Admin Chats</a>
+    <div class="avatar"></div>
+    <button class="btn btn-outline btn-sm" id="btnLogout" style="margin-left:6px;font-size:12px;padding:5px 12px;">Logout</button>
+  </div>
+</nav>
+
+<main class="container" data-admin-chat="1">
+  <div class="page-hd anim-up">
+    <div class="page-hd-row">
+      <div>
+        <h1 class="page-title">Admin Chat Review</h1>
+        <p class="text-sm text-muted">View any finder-claimer conversation to resolve disputes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-layout">
+    <aside class="panel chat-list-panel anim-up-1">
+      <div class="panel-header">
+        <div class="panel-title">All Conversations</div>
+      </div>
+      <div class="panel-body" id="chatConversationList" style="padding:12px;">
+        <div class="text-sm text-muted">Loading…</div>
+      </div>
+    </aside>
+
+    <section class="panel chat-panel anim-up-2">
+      <div class="chat-header">
+        <h2 id="chatItemTitle">Select a conversation</h2>
+        <div class="line" id="chatHeaderLine1">Admin visibility mode.</div>
+        <div class="line" id="chatHeaderLine2"></div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="text-sm text-muted">Choose a chat from the left panel.</div>
+      </div>
+      <form class="chat-composer" id="chatComposer">
+        <input type="text" id="chatInput" maxlength="2000" placeholder="Type a message as admin…" autocomplete="off" disabled>
+        <button class="btn btn-teal" id="chatSendBtn" disabled>Send</button>
+      </form>
+    </section>
+  </div>
+</main>
+
+<div id="toast-container"></div>
+<footer class="site-footer"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+<script src="chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Lost Item — Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">🔍</div>
+    Campus L&amp;F
+  </a>
+  <div class="nav-search">
+    <span class="nav-search-icon">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" placeholder="Search items…">
+  </div>
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+    <a href="report-lost.html" class="nav-link" data-page="report-lost.html">Report Lost</a>
+    <a href="report-found.html" class="nav-link" data-page="report-found.html">Report Found</a>
+    <a href="admin.html" class="nav-link" data-page="admin.html">Admin</a>
+    <div class="avatar" id="btnLogout" title="Sign Out">AJ</div>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb anim-up">
+    <a href="dashboard.html">Dashboard</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">Report Lost Item</span>
+  </div>
+
+  <!-- Page header -->
+  <div class="page-hd anim-up">
+    <div class="page-hd-row">
+      <div>
+        <h1 class="page-title" style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:24px;">📦</span> Report a Lost Item
+        </h1>
+        <p class="text-sm text-muted" style="margin-top:4px;">
+          Provide as much detail as possible to help us reunite you with your belongings.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="report-layout anim-up-1">
+
+    <!-- FORM -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Item Details</span>
+          <span class="badge badge-lost"><span class="badge-dot"></span>Lost Report</span>
+        </div>
+        <div class="panel-body">
+          <form id="reportForm" onsubmit="return false"><input type="hidden" name="type" value="lost">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="itemName">Item Name <span class="req">*</span></label>
+                <input class="form-control" type="text" id="itemName" name="itemName" placeholder="e.g. MacBook Pro, Blue Wallet…">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="category">Category <span class="req">*</span></label>
+                <select class="form-control" id="category" name="category">
+                  <option value="">Select category…</option>
+                  <option>Electronics</option>
+                  <option>Clothing &amp; Apparel</option>
+                  <option>Books &amp; Stationery</option>
+                  <option>Accessories</option>
+                  <option>Keys</option>
+                  <option>Bags &amp; Luggage</option>
+                  <option>Sports Equipment</option>
+                  <option>Documents / ID</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="locationLost">Last Known Location <span class="req">*</span></label>
+                <input class="form-control" type="text" id="locationLost" name="locationLost" name="locationLost" placeholder="e.g. Main Library, 2nd Floor">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dateLost">Date Lost <span class="req">*</span></label>
+                <input class="form-control" type="date" id="dateLost" name="dateLost" name="dateLost" max="2026-03-12">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="timeLost">Approx. Time Lost</label>
+                <input class="form-control" type="time" id="timeLost" name="timeLost" name="timeLost">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="color">Color / Appearance</label>
+                <input class="form-control" type="text" id="color" name="color" name="color" placeholder="e.g. Black with silver logo">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="description">Description <span class="req">*</span></label>
+              <textarea class="form-control" id="description" name="description" name="description" rows="4" placeholder="Describe the item in detail — brand, model, distinguishing marks, what was inside (if applicable)…"></textarea>
+              <div class="form-hint">The more detail you add, the easier it is to identify your item.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Upload Photo (optional)</label>
+              <div class="file-drop">
+                <input type="file" accept="image/*">
+                <div class="file-drop-icon">🖼️</div>
+                <div class="file-drop-title">Click to upload or drag &amp; drop</div>
+                <div class="file-drop-sub">PNG, JPG, WEBP up to 10 MB</div>
+              </div>
+              <div class="file-preview" id="filePreview">
+                <img alt="Preview">
+                <div class="file-preview-name"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contact">Contact / Reward Note</label>
+              <input class="form-control" type="text" id="contact" name="contact" placeholder="e.g. Please contact via college email, reward offered">
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="flex gap-2">
+              <button class="btn btn-primary btn-lg" id="submitReport" type="button">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Submit Lost Report
+              </button>
+              <a href="dashboard.html" class="btn btn-outline btn-lg">Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR TIPS -->
+    <div>
+      <div class="tips-box mb-4" style="margin-bottom:16px;">
+        <div class="tips-box-title">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Reporting Tips
+        </div>
+        <ul class="tips-list">
+          <li>Include brand name, model number, and serial number if known.</li>
+          <li>Note any unique identifying marks (stickers, scratches, engravings).</li>
+          <li>Upload a photo if you have one — it increases chances of recovery.</li>
+          <li>Be specific about the location and time.</li>
+          <li>Check with nearby offices and security desks first.</li>
+        </ul>
+      </div>
+
+      <div class="tips-box" style="background:var(--amber-lt); border-color:rgba(217,119,6,.2);">
+        <div class="tips-box-title" style="color:var(--amber);">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Important
+        </div>
+        <ul class="tips-list" style="--teal:var(--amber);">
+          <li>For lost IDs or documents, notify the admin office immediately.</li>
+          <li>If you lost something valuable, also file a security report.</li>
+          <li>Your contact info is kept private and shared only with admins.</li>
+        </ul>
+      </div>
+
+      <!-- What happens next -->
+      <div class="panel mt-4" style="margin-top:16px;">
+        <div class="panel-header"><span class="panel-title">What happens next?</span></div>
+        <div class="panel-body" style="padding:16px 18px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--teal-lt);color:var(--teal-dk);display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0;">1</div>
+              <div>
+                <div class="fw-500 text-sm">Report submitted</div>
+                <div class="text-xs text-muted">Your report goes live on the portal immediately.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--teal-lt);color:var(--teal-dk);display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0;">2</div>
+              <div>
+                <div class="fw-500 text-sm">Community notified</div>
+                <div class="text-xs text-muted">Students and staff can see and match your report.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:26px;height:26px;border-radius:50%;background:var(--teal-lt);color:var(--teal-dk);display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0;">3</div>
+              <div>
+                <div class="fw-500 text-sm">Match found → You're notified</div>
+                <div class="text-xs text-muted">Admin approves and reaches out to you to collect.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+  </div><!-- /report-layout -->
+
+</main>
+
+<div id="toast-container"></div>
+<script src="script.js"></script>
+</body>
+</html>

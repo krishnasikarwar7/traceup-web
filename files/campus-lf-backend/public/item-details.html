@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MacBook Pro 14" — Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">🔍</div>
+    Campus L&amp;F
+  </a>
+  <div class="nav-search">
+    <span class="nav-search-icon">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" placeholder="Search items…">
+  </div>
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+    <a href="report-lost.html" class="nav-link" data-page="report-lost.html">Report Lost</a>
+    <a href="report-found.html" class="nav-link" data-page="report-found.html">Report Found</a>
+    <a href="admin.html" class="nav-link" data-page="admin.html">Admin</a>
+    <div class="avatar" id="btnLogout" title="Sign Out">AJ</div>
+  </div>
+</nav>
+
+<main class="container" id="itemDetailContainer">
+
+  <div class="breadcrumb anim-up">
+    <a href="dashboard.html">Dashboard</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="dashboard.html">Lost Items</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current" id="bcCurrent">MacBook Pro 14"</span>
+  </div>
+
+  <div class="detail-layout anim-up-1">
+
+    <!-- LEFT: Image + Description -->
+    <div>
+      <div class="detail-img mb-6" style="margin-bottom:24px;">
+        <img id="detailImg" src="https://picsum.photos/seed/laptop42/800/600" alt="MacBook Pro 14-inch">
+      </div>
+
+      <div class="detail-content">
+        <div class="flex items-center gap-2 mb-4" style="margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+          <span class="badge badge-lost" style="font-size:13px;padding:5px 12px;"><span class="badge-dot"></span>Lost</span>
+          <span class="badge badge-neutral"><span id="detailCategory">Electronics</span></span>
+          <span class="text-xs text-muted" style="margin-left:auto;">Posted March 10, 2026</span>
+        </div>
+
+        <h1 class="detail-title" id="detailTitle">MacBook Pro 14"</h1>
+        <p class="detail-desc">
+          Space Grey MacBook Pro 14-inch, M3 chip, 16GB RAM, 512GB SSD. Has a small diagonal scratch on the lid near the top-left corner. A "Property of Priya Singh" sticker is affixed on the bottom. The laptop bag (black Samsonite) may have been left with it. Last seen on the table near Window Seat Row 2, <span id="detailLocation">Main Library, 2nd Floor</span>.
+        </p>
+        <p class="detail-desc" style="margin-top:14px;">
+          Contains extremely important project files. Would be very grateful for its return. A ₹2,000 finder's reward is offered.
+        </p>
+
+        <div class="divider"></div>
+
+        <!-- Extra details section -->
+        <div>
+          <div class="section-title" style="margin-bottom:14px;">Additional Information</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+
+            <div style="background:var(--bg-subtle);border-radius:var(--radius-sm);padding:14px;">
+              <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Brand / Model</div>
+              <div class="fw-500 text-sm">Apple MacBook Pro 14" (2024)</div>
+            </div>
+            <div style="background:var(--bg-subtle);border-radius:var(--radius-sm);padding:14px;">
+              <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Color</div>
+              <div class="fw-500 text-sm">Space Grey</div>
+            </div>
+            <div style="background:var(--bg-subtle);border-radius:var(--radius-sm);padding:14px;">
+              <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Serial Number (partial)</div>
+              <div class="fw-500 text-sm">C02X****LVDT</div>
+            </div>
+            <div style="background:var(--bg-subtle);border-radius:var(--radius-sm);padding:14px;">
+              <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Reward</div>
+              <div class="fw-500 text-sm" style="color:var(--green);">₹2,000 offered</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Report / Share actions -->
+        <div class="flex gap-2" style="flex-wrap:wrap;">
+          <a href="report-found.html" class="btn btn-outline btn-sm">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            I Found This!
+          </a>
+          <button class="btn btn-ghost btn-sm" onclick="navigator.clipboard?.writeText(location.href);showToast('Link copied!','info');">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Sidebar Info Card -->
+    <div>
+      <div class="detail-info-card mb-4" style="margin-bottom:16px;">
+        <div class="detail-info-header">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span class="badge badge-lost" style="font-size:12.5px;padding:4px 12px;"><span class="badge-dot"></span>Status: Lost</span>
+            <span class="text-xs text-muted"><span id="detailId">ID #LF-2026-042</span></span>
+          </div>
+          <div style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);">MacBook Pro 14"</div>
+        </div>
+
+        <div class="detail-info-body">
+          <div class="detail-row">
+            <div class="detail-row-icon">📍</div>
+            <div>
+              <div class="detail-row-label">Location</div>
+              <div class="detail-row-val">Main Library, 2nd Floor</div>
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-row-icon">📅</div>
+            <div>
+              <div class="detail-row-label">Date Lost</div>
+              <div class="detail-row-val"><span id="detailDate">March 10, 2026 · ~3:30 PM</span></div>
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-row-icon">🏷️</div>
+            <div>
+              <div class="detail-row-label">Category</div>
+              <div class="detail-row-val">Electronics</div>
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-row-icon">👤</div>
+            <div>
+              <div class="detail-row-label">Reported by</div>
+              <div class="detail-row-val"><span id="detailReporter">Priya Singh (CS — Year 3)</span></div>
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-row-icon">⏱️</div>
+            <div>
+              <div class="detail-row-label">Posted</div>
+              <div class="detail-row-val">2 days ago</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-info-footer">
+          <button class="btn btn-teal btn-block" id="btnClaim">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/></svg>
+            Claim This Item
+          </button>
+          <button class="btn btn-outline btn-block" onclick="showToast('Contact request sent to admin.','info')">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Contact Admin
+          </button>
+        </div>
+      </div>
+
+      <!-- Similar items -->
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Similar Items</span></div>
+        <div class="panel-body" id="similarItems" style="padding:0;">
+          <a href="item-details.html" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background .15s;" onmouseover="this.style.background='#FAFAF9'" onmouseout="this.style.background=''">
+            <img src="https://picsum.photos/seed/laptop88/60/45" alt="" style="width:56px;height:42px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+            <div>
+              <div class="fw-500 text-sm">Dell XPS 13 Laptop</div>
+              <div class="text-xs text-muted">Engineering Block · Mar 8</div>
+            </div>
+            <span class="badge badge-lost" style="margin-left:auto;flex-shrink:0;"><span class="badge-dot"></span>Lost</span>
+          </a>
+          <a href="item-details.html" style="display:flex;align-items:center;gap:12px;padding:12px 16px;transition:background .15s;" onmouseover="this.style.background='#FAFAF9'" onmouseout="this.style.background=''">
+            <img src="https://picsum.photos/seed/charger44/60/45" alt="" style="width:56px;height:42px;border-radius:6px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;">
+            <div>
+              <div class="fw-500 text-sm">MacBook Charger (USB-C)</div>
+              <div class="text-xs text-muted">Library, Floor 2 · Mar 7</div>
+            </div>
+            <span class="badge badge-found" style="margin-left:auto;flex-shrink:0;"><span class="badge-dot"></span>Found</span>
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+  </div><!-- /detail-layout -->
+
+</main>
+
+<!-- CLAIM MODAL -->
+<div class="modal-backdrop" id="claimModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Claim this item</div>
+        <div class="text-xs text-muted" style="margin-top:3px;">MacBook Pro 14" · #LF-2026-042</div>
+      </div>
+      <button class="modal-close" data-modal-close="claimModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="notice-box info" style="margin-bottom:18px;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span>Your claim will be reviewed by admin. You may be asked to provide proof of ownership.</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="claimDescription">Why does this item belong to you? <span class="req">*</span></label>
+        <textarea class="form-control" id="claimDescription" rows="4" placeholder="Describe identifying features, what's stored on the device, purchase details, any unique markings that prove ownership…"></textarea>
+      </div>
+
+      <div class="form-group mb-0">
+        <label class="form-label" for="claimContact">Your Contact Number</label>
+        <input class="form-control" type="tel" id="claimContact" placeholder="+91 98765 43210">
+        <div class="form-hint">Admin will use this to schedule pickup.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" data-modal-close="claimModal">Cancel</button>
+      <button class="btn btn-teal" id="submitClaim">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Submit Claim
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="script.js"></script>
+<script>
+  function showToast(m, t) {
+    const w = document.getElementById('toast-container');
+    const icons = {success:'✓',error:'✕',info:'ℹ'};
+    const el = document.createElement('div');
+    el.className = `toast ${t}`;
+    el.innerHTML = `<span>${icons[t]}</span><span>${m}</span>`;
+    w.appendChild(el);
+    setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all .25s'; setTimeout(()=>el.remove(),260); }, 3000);
+  }
+</script>
+</body>
+</html>

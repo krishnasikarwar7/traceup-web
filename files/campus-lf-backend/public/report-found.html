@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Found Item — Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">🔍</div>
+    Campus L&amp;F
+  </a>
+  <div class="nav-search">
+    <span class="nav-search-icon">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" placeholder="Search items…">
+  </div>
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+    <a href="report-lost.html" class="nav-link" data-page="report-lost.html">Report Lost</a>
+    <a href="report-found.html" class="nav-link" data-page="report-found.html">Report Found</a>
+    <a href="admin.html" class="nav-link" data-page="admin.html">Admin</a>
+    <div class="avatar" id="btnLogout" title="Sign Out">AJ</div>
+  </div>
+</nav>
+
+<main class="container">
+
+  <div class="breadcrumb anim-up">
+    <a href="dashboard.html">Dashboard</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">Report Found Item</span>
+  </div>
+
+  <div class="page-hd anim-up">
+    <div class="page-hd-row">
+      <div>
+        <h1 class="page-title" style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:24px;">✅</span> Report a Found Item
+        </h1>
+        <p class="text-sm text-muted" style="margin-top:4px;">
+          Thank you for turning in a found item! Help us reunite it with its owner.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="report-layout anim-up-1">
+
+    <!-- FORM -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Found Item Details</span>
+          <span class="badge badge-found"><span class="badge-dot"></span>Found Report</span>
+        </div>
+        <div class="panel-body">
+          <form id="reportForm" onsubmit="return false"><input type="hidden" name="type" value="found">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="itemName">Item Name <span class="req">*</span></label>
+                <input class="form-control" type="text" id="itemName" name="itemName" name="itemName" placeholder="e.g. Black Umbrella, Silver Watch…">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="category">Category</label>
+                <select class="form-control" id="category" name="category" name="category">
+                  <option value="">Select category…</option>
+                  <option>Electronics</option>
+                  <option>Clothing &amp; Apparel</option>
+                  <option>Books &amp; Stationery</option>
+                  <option>Accessories</option>
+                  <option>Keys</option>
+                  <option>Bags &amp; Luggage</option>
+                  <option>Sports Equipment</option>
+                  <option>Documents / ID</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="locationFound">Location Found <span class="req">*</span></label>
+                <input class="form-control" type="text" id="locationFound" name="locationFound" name="locationFound" placeholder="e.g. Cafeteria Table 4, Near Gate B…">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dateFound">Date Found <span class="req">*</span></label>
+                <input class="form-control" type="date" id="dateFound" name="dateFound" name="dateFound" max="2026-03-12">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="timeFound">Time Found</label>
+                <input class="form-control" type="time" id="timeFound" name="timeFound" name="timeFound">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="storedAt">Item Currently Stored At</label>
+                <input class="form-control" type="text" id="storedAt" name="storedAt" placeholder="e.g. Security Office, Block A">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="description">Description <span class="req">*</span></label>
+              <textarea class="form-control" id="description" name="description" name="description" rows="4" placeholder="Describe what you found — color, brand, size, any markings, contents visible…"></textarea>
+              <div class="form-hint">Your description helps the rightful owner verify their claim.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Upload Photo (recommended)</label>
+              <div class="file-drop">
+                <input type="file" accept="image/*">
+                <div class="file-drop-icon">📷</div>
+                <div class="file-drop-title">Click to upload or drag &amp; drop</div>
+                <div class="file-drop-sub">PNG, JPG, WEBP up to 10 MB</div>
+              </div>
+              <div class="file-preview" id="filePreview">
+                <img alt="Preview">
+                <div class="file-preview-name"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="condition">Item Condition</label>
+              <select class="form-control" id="condition" name="condition">
+                <option value="">Select condition…</option>
+                <option>Excellent — looks new</option>
+                <option>Good — minor wear</option>
+                <option>Fair — visible damage</option>
+                <option>Poor — significant damage</option>
+              </select>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="flex gap-2">
+              <button class="btn btn-teal btn-lg" id="submitReport" type="button">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Submit Found Report
+              </button>
+              <a href="dashboard.html" class="btn btn-outline btn-lg">Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="tips-box mb-4" style="margin-bottom:16px;">
+        <div class="tips-box-title">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Submission Tips
+        </div>
+        <ul class="tips-list">
+          <li>Take a clear photo of the item before submitting.</li>
+          <li>Hand over IDs and documents to the security office directly.</li>
+          <li>Note the exact location where you found it — even nearby landmarks.</li>
+          <li>Don't share item details publicly — let the owner verify through the portal.</li>
+          <li>Check if there's already a matching lost report on the dashboard.</li>
+        </ul>
+      </div>
+
+      <!-- Good citizen badge -->
+      <div style="background:linear-gradient(135deg,var(--teal-lt),var(--green-lt));border:1px solid rgba(13,148,136,.2);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;">
+        <div style="font-size:36px;margin-bottom:8px;">🏅</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:17px;color:var(--teal-dk);margin-bottom:4px;">Thank you!</div>
+        <div style="font-size:13px;color:var(--ink-2);line-height:1.5;">Turning in a found item makes a real difference. You're helping keep our campus community honest and caring.</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Drop-off Points</span></div>
+        <div class="panel-body" style="padding:0;">
+          <div style="display:flex;flex-direction:column;">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);">
+              <span style="font-size:18px;">🏢</span>
+              <div>
+                <div class="fw-500 text-sm">Main Security Office</div>
+                <div class="text-xs text-muted">Gate 1, Ground Floor • Open 24/7</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);">
+              <span style="font-size:18px;">📚</span>
+              <div>
+                <div class="fw-500 text-sm">Library Information Desk</div>
+                <div class="text-xs text-muted">Main Library • Mon–Sat 8am–8pm</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;">
+              <span style="font-size:18px;">🏫</span>
+              <div>
+                <div class="fw-500 text-sm">Student Affairs Office</div>
+                <div class="text-xs text-muted">Admin Block Rm 102 • Mon–Fri 9am–5pm</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<div id="toast-container"></div>
+<script src="script.js"></script>
+</body>
+</html>

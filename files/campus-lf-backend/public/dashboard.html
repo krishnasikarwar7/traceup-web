@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <div class="nav-logo">🔍</div>
+    Campus L&amp;F
+  </a>
+
+  <div class="nav-search">
+    <span class="nav-search-icon">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" id="globalSearch" placeholder="Search items, locations…">
+  </div>
+
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+    <a href="report-lost.html" class="nav-link" data-page="report-lost.html">Report Lost</a>
+    <a href="report-found.html" class="nav-link" data-page="report-found.html">Report Found</a>
+    <a href="admin.html" class="nav-link" data-page="admin.html">Admin</a>
+    <div class="avatar" id="btnLogout" title="Sign Out (click to logout)">AJ</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="container">
+
+  <!-- Page Header -->
+  <div class="page-hd anim-up">
+    <div class="page-hd-row">
+      <div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="text-sm text-muted mt-4" style="margin-top:4px;">Browse and manage lost &amp; found items across campus.</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="report-lost.html" class="btn btn-outline btn-sm">+ Report Lost</a>
+        <a href="report-found.html" class="btn btn-teal btn-sm">+ Report Found</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stat Cards -->
+  <div class="grid-stats mb-6 anim-up-1">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#FEF2F2;">📦</div>
+      <div class="stat-body">
+        <div class="stat-label">Lost Items</div>
+        <div class="stat-value" id="stat-lost">47</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--green-lt);">✅</div>
+      <div class="stat-body">
+        <div class="stat-label">Found Items</div>
+        <div class="stat-value" id="stat-found">31</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--amber-lt);">🏷️</div>
+      <div class="stat-body">
+        <div class="stat-label">Pending Claims</div>
+        <div class="stat-value" id="stat-claimed">12</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--violet-lt);">🎉</div>
+      <div class="stat-body">
+        <div class="stat-label">Returned</div>
+        <div class="stat-value" id="stat-returned">89</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="anim-up-2">
+    <div class="tabs" data-tabs>
+      <button class="tab-btn active" data-tab="tab-lost">Lost Items <span class="badge badge-lost" style="margin-left:6px;">47</span></button>
+      <button class="tab-btn" data-tab="tab-found">Found Items <span class="badge badge-found" style="margin-left:6px;">31</span></button>
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="chips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="lost">Lost</button>
+      <button class="chip" data-filter="found">Found</button>
+      <button class="chip" data-filter="claimed">Claimed</button>
+      <button class="chip" data-filter="returned">Returned</button>
+    </div>
+
+    <!-- LOST ITEMS TAB -->
+    <div class="tab-panel active" id="tab-lost">
+      <div class="section-hd">
+        <div>
+          <div class="section-title">Recent Lost Items</div>
+          <div class="section-sub">Items reported missing on campus</div>
+        </div>
+        <a href="#" class="btn btn-ghost btn-sm">View all →</a>
+      </div>
+
+      <div class="grid-cards" id="grid-lost">
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="lost">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/laptop42/400/250" alt="MacBook Pro">
+              <div class="card-badge-wrap"><span class="badge badge-lost"><span class="badge-dot"></span>Lost</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">MacBook Pro 14"</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Main Library, 2nd Floor
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 10, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Electronics</span>
+                <span class="text-xs text-muted">by Priya S.</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="lost">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/wallet21/400/250" alt="Brown Leather Wallet">
+              <div class="card-badge-wrap"><span class="badge badge-lost"><span class="badge-dot"></span>Lost</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">Brown Leather Wallet</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Cafeteria Block B
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 9, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Accessories</span>
+                <span class="text-xs text-muted">by Rohan M.</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="claimed">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/airpods55/400/250" alt="AirPods Pro">
+              <div class="card-badge-wrap"><span class="badge badge-claimed"><span class="badge-dot"></span>Claimed</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">AirPods Pro (Gen 2)</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Sports Complex
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 8, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Electronics</span>
+                <span class="text-xs text-muted">by Sneha P.</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="lost">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/keychain88/400/250" alt="Key Bundle">
+              <div class="card-badge-wrap"><span class="badge badge-lost"><span class="badge-dot"></span>Lost</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">Key Bundle (3 keys)</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Engineering Block
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 7, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Keys</span>
+                <span class="text-xs text-muted">by Dev K.</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="returned">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/jacket33/400/250" alt="Blue Hoodie">
+              <div class="card-badge-wrap"><span class="badge badge-returned"><span class="badge-dot"></span>Returned</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">Blue University Hoodie</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Lecture Hall A
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 6, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Clothing</span>
+                <span class="text-xs text-muted">by Aisha K.</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="lost">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/notebook77/400/250" alt="Notebook">
+              <div class="card-badge-wrap"><span class="badge badge-lost"><span class="badge-dot"></span>Lost</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">Physics Notebook (Sem 4)</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Science Block Room 204
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 5, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Stationery</span>
+                <span class="text-xs text-muted">by Kiran T.</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div><!-- /grid-cards -->
+    </div><!-- /tab-lost -->
+
+    <!-- FOUND ITEMS TAB -->
+    <div class="tab-panel" id="tab-found">
+      <div class="section-hd">
+        <div>
+          <div class="section-title">Recent Found Items</div>
+          <div class="section-sub">Items turned in to campus security or staff</div>
+        </div>
+        <a href="#" class="btn btn-ghost btn-sm">View all →</a>
+      </div>
+
+      <div class="grid-cards" id="grid-lost">
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="found">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/umbrella12/400/250" alt="Umbrella">
+              <div class="card-badge-wrap"><span class="badge badge-found"><span class="badge-dot"></span>Found</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">Black Compact Umbrella</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Admin Block Entrance
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 11, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Accessories</span>
+                <span class="text-xs text-muted">Found by staff</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="found">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/watch99/400/250" alt="Watch">
+              <div class="card-badge-wrap"><span class="badge badge-found"><span class="badge-dot"></span>Found</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">Silver Digital Watch</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Gymnasium Locker Room
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 10, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Accessories</span>
+                <span class="text-xs text-muted">by Rahul V.</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div data-card-wrap>
+          <a href="item-details.html" class="item-card" data-status="found">
+            <div class="item-card-img">
+              <img src="https://picsum.photos/seed/glasses44/400/250" alt="Glasses">
+              <div class="card-badge-wrap"><span class="badge badge-found"><span class="badge-dot"></span>Found</span></div>
+            </div>
+            <div class="item-card-body">
+              <div class="item-card-title">Prescription Glasses</div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Seminar Hall 3
+              </div>
+              <div class="item-card-meta">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                March 9, 2026
+              </div>
+              <div class="item-card-footer">
+                <span class="badge badge-neutral">Personal</span>
+                <span class="text-xs text-muted">by Meena J.</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </div><!-- /tab-found -->
+
+  </div><!-- /tabs -->
+
+</main>
+
+<div id="toast-container"></div>
+<script src="script.js"></script>
+</body>
+</html>

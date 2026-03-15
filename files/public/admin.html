@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — TraceUp</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 8px; border-radius: 5px;
+      font-size: 11.5px; font-weight: 600;
+      background: #FEF3C7; color: #92400E;
+    }
+    .claims-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 22px; height: 22px; border-radius: 50%;
+      background: var(--teal-lt); color: var(--teal-dk);
+      font-size: 11px; font-weight: 700; padding: 0 4px;
+    }
+    .claims-count.high { background: #FEF2F2; color: var(--red); }
+
+    /* Claims detail card */
+    .claim-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: var(--bg-card);
+      transition: box-shadow 0.15s;
+    }
+    .claim-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .claim-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px; gap: 8px; flex-wrap: wrap;
+    }
+    .claim-card-user {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .claim-card-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--teal-lt); color: var(--teal-dk);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .claim-card-name { font-weight: 600; font-size: 13.5px; color: var(--ink); }
+    .claim-card-email { font-size: 12px; color: var(--ink-3); }
+    .claim-card-meta {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      font-size: 12px; color: var(--ink-3); margin-bottom: 8px;
+    }
+    .claim-card-meta span { display: flex; align-items: center; gap: 4px; }
+    .claim-card-message {
+      background: var(--bg-subtle); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; color: var(--ink-2); line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .claim-card-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+    /* Admin tabs */
+    .admin-tabs {
+      display: flex; gap: 2px; margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+    .admin-tab-btn {
+      padding: 10px 20px; font-size: 13.5px; font-weight: 600;
+      color: var(--ink-3); border: none; background: none;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -2px; transition: all 0.2s;
+    }
+    .admin-tab-btn:hover { color: var(--ink); }
+    .admin-tab-btn.active {
+      color: var(--teal-dk); border-bottom-color: var(--teal-dk);
+    }
+    .admin-tab-panel { display: none; }
+    .admin-tab-panel.active { display: block; }
+
+    /* Item card in claims list */
+    .claim-item-preview {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px; background: var(--bg-subtle); border-radius: 8px;
+      border: 1px solid var(--border); margin-bottom: 10px;
+    }
+    .claim-item-preview img {
+      width: 44px; height: 33px; border-radius: 6px;
+      object-fit: cover; border: 1px solid var(--border); flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <img src="logo.svg" alt="TraceUp" style="width:28px;height:28px;border-radius:6px;">
+    TraceUp
+  </a>
+  <div class="nav-search">
+    <span class="nav-search-icon">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" placeholder="Search items…">
+  </div>
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-link" data-page="dashboard.html">Dashboard</a>
+    <a href="report-lost.html" class="nav-link" data-page="report-lost.html">Report Lost</a>
+    <a href="report-found.html" class="nav-link" data-page="report-found.html">Report Found</a>
+    <a href="admin.html" class="nav-link" data-page="admin.html">Admin</a>
+    <a href="/admin/chats" class="nav-link" data-page="admin-chats.html">Chats</a>
+    <div class="avatar" title="Admin"></div>
+    <button class="btn btn-outline btn-sm" id="btnLogout" style="margin-left:6px;font-size:12px;padding:5px 12px;">Logout</button>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- Header -->
+  <div class="page-hd anim-up">
+    <div class="page-hd-row">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <h1 class="page-title">Admin Dashboard</h1>
+          <span class="admin-badge">🔐 Admin</span>
+        </div>
+        <p class="text-sm text-muted">Manage lost &amp; found reports, claims, and users for your college.</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="report-lost.html" class="btn btn-primary btn-sm">+ Add Item</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="admin-stat-bar anim-up-1">
+    <div class="mini-stat"><span>Total Items</span><strong id="stat-total">—</strong></div>
+    <div class="mini-stat" style="color:var(--red);"><span>Lost</span><strong id="stat-lost" style="color:var(--red);">—</strong></div>
+    <div class="mini-stat" style="color:var(--green);"><span>Found</span><strong id="stat-found" style="color:var(--green);">—</strong></div>
+    <div class="mini-stat" style="color:var(--amber);"><span>Pending Claims</span><strong id="stat-claimed" style="color:var(--amber);">—</strong></div>
+    <div class="mini-stat" style="color:var(--violet);"><span>Returned</span><strong id="stat-returned" style="color:var(--violet);">—</strong></div>
+  </div>
+
+  <!-- Admin Tabs -->
+  <div class="admin-tabs anim-up-2">
+    <button class="admin-tab-btn active" data-admin-tab="tab-items">📦 Items</button>
+    <button class="admin-tab-btn" data-admin-tab="tab-claims">📋 Claims</button>
+    <button class="admin-tab-btn" data-admin-tab="tab-users">👥 Users</button>
+  </div>
+
+  <!-- TAB: Items -->
+  <div class="admin-tab-panel active" id="tab-items">
+    <!-- Toolbar -->
+    <div class="admin-toolbar">
+      <div class="admin-search">
+        <span class="admin-search-icon">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </span>
+        <input type="text" id="adminSearch" placeholder="Search by item, user, location…">
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="chip admin-filter-chip active" data-filter="all">All</button>
+        <button class="chip admin-filter-chip" data-filter="lost">Lost</button>
+        <button class="chip admin-filter-chip" data-filter="found">Found</button>
+        <button class="chip admin-filter-chip" data-filter="claimed">Claimed</button>
+        <button class="chip admin-filter-chip" data-filter="returned">Returned</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap anim-up-3">
+      <div class="table-scroll">
+        <table class="data-table" id="adminTable">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Status</th>
+              <th>Posted by</th>
+              <th>Location</th>
+              <th>Date</th>
+              <th>Claims</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--ink-3);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <span class="text-xs text-muted" id="adminItemCount">Loading items…</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Claims -->
+  <div class="admin-tab-panel" id="tab-claims">
+    <div class="admin-toolbar">
+      <div class="admin-search">
+        <span class="admin-search-icon">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </span>
+        <input type="text" id="claimSearch" placeholder="Search claims…">
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="chip claim-filter-chip active" data-filter="all">All</button>
+        <button class="chip claim-filter-chip" data-filter="pending">Pending</button>
+        <button class="chip claim-filter-chip" data-filter="approved">Approved</button>
+        <button class="chip claim-filter-chip" data-filter="rejected">Rejected</button>
+      </div>
+    </div>
+    <div id="adminClaimsList">
+      <div style="padding:40px;text-align:center;color:var(--ink-3);">Loading claims…</div>
+    </div>
+    <div style="padding:8px 0;">
+      <span class="text-xs text-muted" id="adminClaimCount"></span>
+    </div>
+  </div>
+
+  <!-- TAB: Users -->
+  <div class="admin-tab-panel" id="tab-users">
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="data-table" id="usersTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Phone</th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--ink-3);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:14px 18px;border-top:1px solid var(--border);">
+        <span class="text-xs text-muted" id="adminUserCount"></span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- CLAIMS DETAIL MODAL (for viewing claims on a specific item) -->
+<div class="modal-backdrop" id="claimsDetailModal">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="claimsModalTitle">Claims for Item</div>
+        <div class="text-xs text-muted" style="margin-top:3px;" id="claimsModalSub">Review and manage claim requests</div>
+      </div>
+      <button class="modal-close" data-modal-close="claimsDetailModal">&times;</button>
+    </div>
+    <div class="modal-body" id="claimsModalBody" style="max-height:60vh;overflow-y:auto;">
+      <p class="text-muted">Loading…</p>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<footer class="site-footer"><div class="footer-brand">TraceUp</div><p class="footer-tagline">Reuniting lost belongings across campus communities.</p><div class="footer-links"><a href="https://github.com/krishnasikarwar7/traceup-web" target="_blank" rel="noopener noreferrer">GitHub</a><span aria-hidden="true">•</span><a href="https://github.com/krishnasikarwar7/traceup-web/issues" target="_blank" rel="noopener noreferrer">Report Issue</a><span aria-hidden="true">•</span><a href="mailto:sikarwarkrishna177@email.com">Contact</a></div><p class="footer-copy">© 2026 TraceUp — Built by Krishna</p></footer>
+<script src="script.js"></script>
+</body>
+</html>

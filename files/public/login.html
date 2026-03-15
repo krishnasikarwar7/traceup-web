@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — TraceUp</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+
+<div class="auth-wrap auth-live">
+  <div class="live-bg live-bg-auth" aria-hidden="true">
+    <div class="live-aurora aurora-a"></div>
+    <div class="live-aurora aurora-b"></div>
+    <div class="live-aurora aurora-c"></div>
+    <div class="live-grid"></div>
+    <div class="live-particles" data-count="34"></div>
+  </div>
+
+  <div class="auth-layout">
+    <aside class="auth-side anim-up">
+      <div class="auth-side-top">
+        <span class="badge badge-teal"><span class="badge-dot"></span>Campus trusted</span>
+        <h2>Find what was lost. Return what was found.</h2>
+        <p>
+          One place for students and staff to post items, submit claims, and close the loop quickly.
+        </p>
+      </div>
+      <div class="auth-side-cards">
+        <article>
+          <strong>Fast reporting</strong>
+          <span>Lost/found forms with image uploads and status tracking.</span>
+        </article>
+        <article>
+          <strong>Safer recovery</strong>
+          <span>Claim review and admin approvals protect rightful ownership.</span>
+        </article>
+        <article>
+          <strong>Always searchable</strong>
+          <span>Filter by item type, category, date, and location.</span>
+        </article>
+      </div>
+    </aside>
+
+    <div class="auth-card anim-up-1">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <img src="logo.svg" alt="TraceUp" style="width:36px;height:36px;border-radius:8px;">
+      <span>TraceUp</span>
+    </div>
+
+    <!-- LOGIN BLOCK -->
+    <div id="loginBlock">
+      <h1 class="auth-heading">Welcome back</h1>
+      <p class="auth-sub">Sign in to your TraceUp account.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Email address <span class="req">*</span></label>
+        <input class="form-control" type="email" id="loginEmail" placeholder="you@university.edu" autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="loginPass">Password <span class="req">*</span></label>
+        <input class="form-control" type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+        <div style="text-align:right; margin-top:6px;">
+          <a href="#" id="openForgotPassword" style="font-size:12.5px; color:var(--teal-dk);">Forgot password?</a>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-xl btn-block" id="btnLogin">Sign in →</button>
+
+      <div class="auth-divider">or</div>
+
+      <p class="auth-switch">
+        New to the portal? <a href="#" id="switchToSignup">Create an account</a>
+      </p>
+    </div>
+
+    <!-- SIGNUP BLOCK -->
+    <div id="signupBlock" class="hidden">
+      <h1 class="auth-heading">Create account</h1>
+      <p class="auth-sub">Join the TraceUp community.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="signupName">Full name <span class="req">*</span></label>
+        <input class="form-control" type="text" id="signupName" placeholder="Alex Johnson">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="signupEmail">Email address <span class="req">*</span></label>
+        <input class="form-control" type="email" id="signupEmail" placeholder="you@university.edu">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group mb-0">
+          <label class="form-label" for="signupRole">Role</label>
+          <select class="form-control" id="signupRole">
+            <option value="user">Student / User</option>
+            <option value="user">Faculty / Staff</option>
+          </select>
+        </div>
+        <div class="form-group mb-0">
+          <label class="form-label" for="signupDept">Department</label>
+          <input class="form-control" type="text" id="signupDept" placeholder="e.g. CS, ECE, Mech">
+        </div>
+      </div>
+
+      <div class="form-group mt-4">
+        <label class="form-label" for="signupSecurityQuestion">Security Question <span class="req">*</span></label>
+        <select class="form-control" id="signupSecurityQuestion">
+          <option value="">Select a security question…</option>
+          <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+          <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+          <option value="What was the name of your elementary school?">What was the name of your elementary school?</option>
+          <option value="What is the name of the city where you were born?">What is the name of the city where you were born?</option>
+          <option value="What is your favorite book?">What is your favorite book?</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="signupSecurityAnswer">Answer <span class="req">*</span></label>
+        <input class="form-control" type="text" id="signupSecurityAnswer" placeholder="Your answer (case-insensitive)">
+      </div>
+
+      <div class="form-group mt-4">
+        <label class="form-label" for="signupPass">Password <span class="req">*</span></label>
+        <input class="form-control" type="password" id="signupPass" placeholder="Minimum 6 characters">
+      </div>
+
+      <button class="btn btn-teal btn-xl btn-block" id="btnSignup">Create account →</button>
+
+      <div class="auth-divider">or</div>
+
+      <p class="auth-switch">
+        Already have an account? <a href="#" id="switchToLogin">Sign in</a>
+      </p>
+    </div>
+
+    <!-- FORGOT PASSWORD BLOCK (Security Question Flow) -->
+    <div id="forgotBlock" class="hidden">
+      <h1 class="auth-heading">Reset password</h1>
+      <p class="auth-sub" id="forgotSubtitle">Enter your email to retrieve your security question.</p>
+
+      <!-- Step 1: Email -->
+      <div id="forgotStep1">
+        <div class="form-group">
+          <label class="form-label" for="forgotEmail">Email address <span class="req">*</span></label>
+          <input class="form-control" type="email" id="forgotEmail" placeholder="you@university.edu" autocomplete="email">
+        </div>
+        <button class="btn btn-primary btn-xl btn-block" id="btnForgotNext">Next →</button>
+      </div>
+
+      <!-- Step 2: Security Question & Reset -->
+      <div id="forgotStep2" class="hidden mt-4">
+        <div class="form-group">
+          <label class="form-label">Security Question</label>
+          <div class="form-control" style="background:#f1f5f9; cursor:not-allowed;" id="displaySecurityQuestion">...</div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="forgotSecurityAnswer">Your Answer <span class="req">*</span></label>
+          <input class="form-control" type="text" id="forgotSecurityAnswer" placeholder="Case-insensitive answer">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="forgotNewPass">New Password <span class="req">*</span></label>
+          <input class="form-control" type="password" id="forgotNewPass" placeholder="Minimum 6 characters">
+        </div>
+
+        <button class="btn btn-teal btn-xl btn-block" id="btnResetPassword">Reset password →</button>
+      </div>
+
+      <p class="auth-switch" style="margin-top:16px;">
+        <a href="#" id="backToLogin">← Back to sign in</a>
+      </p>
+    </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<footer class="site-footer site-footer-floating"><div class="footer-brand">TraceUp</div><p class="footer-tagline">Reuniting lost belongings across campus communities.</p><div class="footer-links"><a href="https://github.com/krishnasikarwar7/traceup-web" target="_blank" rel="noopener noreferrer">GitHub</a><span aria-hidden="true">•</span><a href="https://github.com/krishnasikarwar7/traceup-web/issues" target="_blank" rel="noopener noreferrer">Report Issue</a><span aria-hidden="true">•</span><a href="mailto:sikarwarkrishna177@email.com">Contact</a></div><p class="footer-copy">© 2026 TraceUp — Built by Krishna</p></footer>
+<script src="script.js"></script>
+</body>
+</html>
