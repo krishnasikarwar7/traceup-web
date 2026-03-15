@@ -1286,13 +1286,20 @@ function initLiveBackgrounds() {
     if (host.dataset.liveInit === '1') return;
     host.dataset.liveInit = '1';
 
+    const hwThreads = Number(navigator.hardwareConcurrency || 8);
+    const deviceMem = Number(navigator.deviceMemory || 8);
+    const lowPowerDevice = hwThreads <= 4 || deviceMem <= 4;
+
     const requested = Number(host.dataset.count) || 30;
     const cap = Math.min(Math.max(requested, 14), 56);
-    const count = window.innerWidth < 700 ? Math.max(12, Math.floor(cap * 0.55)) : cap;
+    const baseCount = window.innerWidth < 700 ? Math.max(12, Math.floor(cap * 0.55)) : cap;
+    const count = lowPowerDevice ? Math.max(10, Math.floor(baseCount * 0.68)) : baseCount;
+    const speedScale = lowPowerDevice ? 0.74 : 1;
 
     const particles = [];
     let width = 0;
     let height = 0;
+    let lastFrameMs = 0;
 
     for (let i = 0; i < count; i++) {
       const el = document.createElement('span');
@@ -1302,8 +1309,8 @@ function initLiveBackgrounds() {
         el,
         x: 0,
         y: 0,
-        vx: (Math.random() * 0.6 + 0.18) * (Math.random() < 0.5 ? -1 : 1),
-        vy: (Math.random() * 0.5 + 0.12) * (Math.random() < 0.5 ? -1 : 1),
+        vx: (Math.random() * 0.6 + 0.18) * speedScale * (Math.random() < 0.5 ? -1 : 1),
+        vy: (Math.random() * 0.5 + 0.12) * speedScale * (Math.random() < 0.5 ? -1 : 1),
         size: Math.random() * 6 + 4,
         phase: Math.random() * Math.PI * 2,
         twinkle: Math.random() * 0.9 + 0.35
@@ -1326,6 +1333,16 @@ function initLiveBackgrounds() {
     window.addEventListener('resize', debounce(layout, 120), { passive: true });
 
     const drift = (timeMs) => {
+      if (document.hidden) {
+        requestAnimationFrame(drift);
+        return;
+      }
+      if (lowPowerDevice && timeMs - lastFrameMs < 28) {
+        requestAnimationFrame(drift);
+        return;
+      }
+      lastFrameMs = timeMs;
+
       const t = timeMs * 0.001;
       particles.forEach((p) => {
         p.x += p.vx;
