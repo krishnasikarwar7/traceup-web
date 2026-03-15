@@ -201,10 +201,23 @@ function setActiveNav() {
   // Update avatar initials
   const user = Auth.getUser();
   $$('.avatar').forEach(av => {
+    const navLinks = av.closest('.nav-links');
     if (user && user.name) {
       const initials = user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
       av.textContent = initials;
-      av.title = user.name;
+      av.removeAttribute('title');
+
+      if (navLinks) {
+        let greeting = navLinks.querySelector('.nav-greeting-user');
+        if (!greeting) {
+          greeting = document.createElement('span');
+          greeting.className = 'nav-greeting nav-greeting-user';
+          av.parentNode.insertBefore(greeting, av);
+        }
+        greeting.textContent = `Hi ${user.name}`;
+      }
+    } else if (navLinks) {
+      navLinks.querySelector('.nav-greeting-user')?.remove();
     }
   });
 }

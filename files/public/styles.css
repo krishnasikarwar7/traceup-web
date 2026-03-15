@@ -218,6 +218,14 @@ html[data-theme='dark'] .navbar {
   margin-left: auto;
 }
 
+.nav-greeting {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  white-space: nowrap;
+  padding: 0 4px 0 6px;
+}
+
 .nav-link {
   padding: 7px 13px;
   border-radius: var(--radius-sm);
@@ -1748,6 +1756,9 @@ html[data-theme='dark'] .msg.me {
   .nav-links {
     margin-left: auto;
     gap: 8px;
+  }
+  .nav-greeting {
+    display: none;
   }
   .nav-links .nav-link {
     display: none;
