@@ -18,6 +18,7 @@ const cors    = require('cors');
 const crypto  = require('crypto');
 const path    = require('path');
 const fs      = require('fs');
+const os      = require('os');
 const dotenv  = require('dotenv');
 
 // Load env in this order:
@@ -39,7 +40,9 @@ const User        = require('./files/models/User');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 const isProduction = process.env.NODE_ENV === 'production';
+const allowAllOrigins = process.env.CORS_ALLOW_ALL === 'true';
 const normalizeOrigin = (value = '') => {
   if (!value) return '';
   const raw = String(value).trim();
@@ -160,7 +163,8 @@ app.use((req, res, next) => {
 // CORS — allow requests from the frontend origin
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    if (!origin) return callback(null, true);
+    if (!isProduction || allowAllOrigins || allowedOrigins.includes(origin)) return callback(null, true);
     return callback(null, false);
   },
   methods:            ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -288,10 +292,18 @@ async function startServer() {
     console.error('[startup] Admin seed failed:', err.message || err);
   }
 
-  app.listen(PORT, () => {
+  app.listen(PORT, HOST, () => {
+    const networkInterfaces = os.networkInterfaces();
+    const networkIp = Object.values(networkInterfaces)
+      .flat()
+      .find((info) => info && info.family === 'IPv4' && !info.internal)?.address;
+    const localUrl = `http://localhost:${PORT}`;
+    const networkUrl = networkIp ? `http://${networkIp}:${PORT}` : null;
+
     console.log('\n╔══════════════════════════════════════════════╗');
     console.log('║   TraceUp API  (Supabase)                    ║');
-    console.log(`║   http://localhost:${PORT}                       ║`);
+    console.log(`║   ${localUrl.padEnd(42)}║`);
+    if (networkUrl) console.log(`║   ${networkUrl.padEnd(42)}║`);
     console.log('╠══════════════════════════════════════════════╣');
     console.log('║  POST   /api/auth/register                   ║');
     console.log('║  POST   /api/auth/login                      ║');
